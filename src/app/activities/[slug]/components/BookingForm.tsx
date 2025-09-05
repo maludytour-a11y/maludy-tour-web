@@ -3,7 +3,7 @@
 import { useMemo, useState } from "react";
 import { Controller, useForm, useWatch } from "react-hook-form";
 import { format } from "date-fns";
-import { es } from "date-fns/locale";
+import { da, es } from "date-fns/locale";
 import { Users, Calendar as CalendarIcon, MapPin, Mail, Phone, Info, User, Minus, Plus } from "lucide-react";
 
 // shadcn/ui
@@ -16,6 +16,10 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Calendar } from "@/components/ui/calendar";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import { useAppDispatch, useAppSelector } from "@/app/context/redux/hooks";
+import { bookingSlice, setBookingData } from "@/app/context/redux/features/bookingSlice";
+
+/* ---------------- Tipos ---------------- */
 
 type Guests = {
   seniors: number; // 65+
@@ -36,21 +40,42 @@ type FormValues = {
   guests: Guests;
 };
 
+export type PricesDTO = {
+  seniorPrice: number;
+  adultPrice: number;
+  youthsPrice: number;
+  childrenPrice: number;
+  babiesPrice: number;
+  seniorAge: number[];
+  adultAge: number[];
+  youthsAge: number[];
+  childrenAge: number[];
+  babiesAge: number[];
+};
+
 interface BookingFormProps {
   id: string;
-  price: number; // base para simular tarifas
+  prices: PricesDTO;
 }
+
+/* ---------------- Utils ---------------- */
 
 const currency = new Intl.NumberFormat("es-DO", { style: "currency", currency: "USD" });
 
-// Simulación de tarifas por tipo
-const simulatePricing = (base: number) => ({
-  seniors: Math.round(base * 0.9), // -10%
-  adults: Math.round(base * 1.0),
-  youths: Math.round(base * 0.85), // -15%
-  children: Math.round(base * 0.7), // -30%
-  babies: 0, // gratis
-});
+function formatAgeRange(range?: number[]) {
+  if (!range || range.length === 0) return "";
+  const min = Math.min(...range);
+  const max = Math.max(...range);
+  if (!Number.isFinite(min)) return "";
+  if (!Number.isFinite(max) || max === Infinity) return `${min}+`;
+  if (min === max) return `${min}+`;
+  return `${min}–${max}`;
+}
+
+function minPositive(...nums: number[]) {
+  const positives = nums.filter((n) => typeof n === "number" && n > 0);
+  return positives.length ? Math.min(...positives) : 0;
+}
 
 // Componente contador reutilizable
 function Counter({ value, onChange, disabled }: { value: number; onChange: (n: number) => void; disabled?: boolean }) {
@@ -67,11 +92,62 @@ function Counter({ value, onChange, disabled }: { value: number; onChange: (n: n
   );
 }
 
-export function BookingForm({ id, price }: BookingFormProps) {
-  const pricing = useMemo(() => simulatePricing(price), [price]);
+/* ---------------- Componente ---------------- */
+
+export function BookingForm({ id, prices }: BookingFormProps) {
+  const dispatch = useAppDispatch();
+  const bookingData = useAppSelector((state) => state.bookingReducer.booking);
+
+  // Construimos la “tabla” de categorías a partir de props
+  const categories = useMemo(
+    () =>
+      [
+        {
+          key: "seniors",
+          label: "Ancianos",
+          price: Number(prices?.seniorPrice ?? 0),
+          ages: prices?.seniorAge ?? [],
+          requiresAdult: false,
+        },
+        {
+          key: "adults",
+          label: "Adultos",
+          price: Number(prices?.adultPrice ?? 0),
+          ages: prices?.adultAge ?? [],
+          requiresAdult: false,
+        },
+        {
+          key: "youths",
+          label: "Jóvenes",
+          price: Number(prices?.youthsPrice ?? 0),
+          ages: prices?.youthsAge ?? [],
+          requiresAdult: true,
+        },
+        {
+          key: "children",
+          label: "Niños",
+          price: Number(prices?.childrenPrice ?? 0),
+          ages: prices?.childrenAge ?? [],
+          requiresAdult: true,
+        },
+        {
+          key: "babies",
+          label: "Bebés",
+          price: Number(prices?.babiesPrice ?? 0),
+          ages: prices?.babiesAge ?? [],
+          requiresAdult: true,
+        },
+      ] as const,
+    [prices]
+  );
+
+  const fromPrice = useMemo(() => minPositive(categories[0].price, categories[1].price, categories[2].price, categories[3].price, categories[4].price), [categories]);
+
+  // UI state
   const [openGuests, setOpenGuests] = useState(false);
   const [openCalendar, setOpenCalendar] = useState(false);
 
+  // RHF
   const {
     register,
     handleSubmit,
@@ -102,44 +178,52 @@ export function BookingForm({ id, price }: BookingFormProps) {
 
   const adultCompanions = (guests?.adults ?? 0) + (guests?.seniors ?? 0);
 
-  const payingCount = (guests?.seniors ?? 0) + (guests?.adults ?? 0) + (guests?.youths ?? 0) + (guests?.children ?? 0);
+  // Cálculos usando la tabla de categorías
+  const payingCount = (["seniors", "adults", "youths", "children"] as (keyof Guests)[]).map((k) => guests?.[k] ?? 0).reduce((a, b) => a + b, 0);
 
   const totalPeople = payingCount + (guests?.babies ?? 0);
 
-  const totalPrice = (guests?.seniors ?? 0) * pricing.seniors + (guests?.adults ?? 0) * pricing.adults + (guests?.youths ?? 0) * pricing.youths + (guests?.children ?? 0) * pricing.children + (guests?.babies ?? 0) * pricing.babies;
+  const totalPrice = (categories as readonly { key: keyof Guests; price: number }[]).map((c) => (guests?.[c.key] ?? 0) * (c.price ?? 0)).reduce((a, b) => a + b, 0);
 
   const summaryText = useMemo(() => {
     const parts: string[] = [];
-    const map: Array<[keyof Guests, string]> = [
-      ["seniors", "ancianos"],
-      ["adults", "adultos"],
-      ["youths", "jóvenes"],
-      ["children", "niños"],
-      ["babies", "bebés"],
-    ];
-    map.forEach(([k, label]) => {
-      const qty = guests?.[k] ?? 0;
-      if (qty > 0) parts.push(`${qty} ${label}`);
+    (categories as readonly { key: keyof Guests; label: string }[]).forEach(({ key, label }) => {
+      const qty = guests?.[key] ?? 0;
+      if (qty > 0) parts.push(`${qty} ${label.toLowerCase()}`);
     });
     return parts.length ? parts.join(", ") : "Selecciona personas";
-  }, [guests]);
+  }, [guests, categories]);
 
   const onSubmit = async (data: FormValues) => {
-    const payload = {
-      ...data,
-      date: data.date ? data.date.toISOString() : null,
-      activityId: id,
-      totals: {
-        adultCompanions,
-        payingCount,
-        totalPeople,
-        totalPrice,
-        pricing,
+    const { adults, seniors, children, babies, youths } = data.guests;
+    const isoDate = data.date ? data.date.toISOString() : null;
+
+    console.log(data.guests);
+    const payload: bookingSlice = {
+      customer: {
+        name: data.name,
+        email: data.email,
+        phone: data.phone,
+      },
+      booking: {
+        date: isoDate,
+        activityId: id,
+        activityName: "Colocar nombre de excursion",
+        seniors,
+        adults,
+        youths,
+        children,
+        babies,
+        totalPrice: 0,
+        pickupLocation: data.pickup,
+        schedule: "7:00", // colocar el shedule seleccionado eligiendo de un array que venga de la actividad con los horarios disponibles
       },
     };
-    console.log("Reserva:", payload);
+
+    dispatch(setBookingData(payload));
     alert("¡Solicitud de reserva enviada! Te contactaremos por correo.");
     reset();
+    console.log("booking", bookingData);
   };
 
   // Overlay de personas (Popover)
@@ -155,21 +239,11 @@ export function BookingForm({ id, price }: BookingFormProps) {
             </TooltipTrigger>
             <TooltipContent>
               <div className="text-sm space-y-1">
-                <div>
-                  <strong>Ancianos:</strong> 65+ años
-                </div>
-                <div>
-                  <strong>Adultos:</strong> 18–64
-                </div>
-                <div>
-                  <strong>Jóvenes:</strong> 13–17
-                </div>
-                <div>
-                  <strong>Niños:</strong> 3–12
-                </div>
-                <div>
-                  <strong>Bebés:</strong> 0–2 (gratis)
-                </div>
+                {categories.map((c) => (
+                  <div key={c.key}>
+                    <strong>{c.label}:</strong> {formatAgeRange(c.ages) || "—"}
+                  </div>
+                ))}
               </div>
             </TooltipContent>
           </Tooltip>
@@ -177,21 +251,16 @@ export function BookingForm({ id, price }: BookingFormProps) {
       </div>
 
       <div className="space-y-3">
-        {(
-          [
-            { key: "seniors", label: "Ancianos (65+)", price: pricing.seniors },
-            { key: "adults", label: "Adultos (18–64)", price: pricing.adults },
-            { key: "youths", label: "Jóvenes (13–17)", price: pricing.youths, requiresAdult: true },
-            { key: "children", label: "Niños (3–12)", price: pricing.children, requiresAdult: true },
-            { key: "babies", label: "Bebés (0–2)", price: pricing.babies, requiresAdult: true },
-          ] as Array<{ key: keyof Guests; label: string; price: number; requiresAdult?: boolean }>
-        ).map((row) => {
+        {categories.map((row) => {
           const name = `guests.${row.key}` as const;
           const disabled = !!row.requiresAdult && adultCompanions === 0;
+          const rangeTxt = formatAgeRange(row.ages);
           return (
             <div key={row.key} className="flex items-center justify-between gap-3">
               <div className="flex flex-col">
-                <span className="text-sm">{row.label}</span>
+                <span className="text-sm">
+                  {row.label} {rangeTxt ? `(${rangeTxt})` : ""}
+                </span>
                 <span className="text-xs text-muted-foreground">{row.price > 0 ? `${currency.format(row.price)} c/u` : "Gratis"}</span>
               </div>
               <Controller name={name} control={control} rules={{ min: { value: 0, message: "No puede ser negativo" }, max: { value: 99, message: "Máx. 99" } }} render={({ field }) => <Counter value={field.value ?? 0} onChange={field.onChange} disabled={disabled} />} />
@@ -239,7 +308,7 @@ export function BookingForm({ id, price }: BookingFormProps) {
         </div>
 
         {/* Encabezado de precio */}
-        <p className="text-2xl font-extrabold leading-tight">Desde {currency.format(price)}</p>
+        <p className="text-2xl font-extrabold leading-tight">Desde {currency.format(fromPrice)}</p>
         <p className="text-muted-foreground -mt-1 text-sm">por persona (según categoría)</p>
 
         {/* Resumen dinámico */}
@@ -337,7 +406,7 @@ export function BookingForm({ id, price }: BookingFormProps) {
               render={({ field }) => (
                 <Popover open={openCalendar} onOpenChange={setOpenCalendar}>
                   <PopoverTrigger asChild>
-                    <Button variant="outline" className="w-full justify-start">
+                    <Button variant="outline" className="w-full justify-start cursor-pointer">
                       <CalendarIcon className="mr-2 h-4 w-4" />
                       {field.value ? format(field.value, "dd/MM/yyyy", { locale: es }) : "Selecciona fecha"}
                     </Button>
@@ -410,7 +479,7 @@ export function BookingForm({ id, price }: BookingFormProps) {
             <Textarea id="notes" placeholder="Alergias, horario preferido, etc." {...register("notes")} />
           </div> */}
 
-          <Button type="submit" className="w-full" disabled={!isValid || payingCount === 0}>
+          <Button type="submit" className="w-full cursor-pointer" disabled={!isValid || payingCount === 0}>
             {payingCount > 0 ? `Pagar ahora · ${currency.format(totalPrice)}` : "Pagar ahora"}
           </Button>
 

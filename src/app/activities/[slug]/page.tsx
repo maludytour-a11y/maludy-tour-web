@@ -1,9 +1,8 @@
-// app/activities/[slug]/page.tsx
 import { notFound } from "next/navigation";
 import { db } from "@/app/libs/prisma";
 import { Separator } from "@/components/ui/separator";
 
-import { BookingForm, FeaturedReviews, SlugDetail, SlugGeneralInformation, SlugHeader, SlugWhatsIncluded, SlugWhatYouDo } from "./components";
+import { BookingForm, FeaturedReviews, PricesDTO, SlugDetail, SlugGeneralInformation, SlugHeader, SlugWhatsIncluded, SlugWhatYouDo } from "./components";
 import { SlugGallery } from "./components/SlugGallery";
 
 // Helper: Prisma Decimal/string -> number
@@ -18,7 +17,20 @@ export default async function ActivityDetailPage({ params }: { params: { slug: s
       rating: true,
       reviews: true,
       images: { select: { url: true } },
-      prices: { select: { adultPrice: true } },
+      prices: {
+        select: {
+          seniorAge: true,
+          seniorPrice: true,
+          adultAge: true,
+          adultPrice: true,
+          childrenAge: true,
+          childrenPrice: true,
+          youthsAge: true,
+          youthsPrice: true,
+          babiesAge: true,
+          babiesPrice: true,
+        },
+      },
       // agrega más campos si los necesitas
     },
   });
@@ -30,8 +42,18 @@ export default async function ActivityDetailPage({ params }: { params: { slug: s
   const ratingNum = toNumber(activity.rating);
   const reviewsNum = Number(activity.reviews ?? 0);
   const imageUrls = activity.images;
-  const priceNum = toNumber(activity.prices?.adultPrice);
-
+  const pricesPeople: PricesDTO = {
+    seniorPrice: toNumber(activity.prices?.seniorPrice),
+    adultPrice: toNumber(activity.prices?.adultPrice),
+    youthsPrice: toNumber(activity.prices?.youthsPrice),
+    childrenPrice: toNumber(activity.prices?.childrenPrice),
+    babiesPrice: toNumber(activity.prices?.babiesPrice),
+    seniorAge: activity.prices?.seniorAge ?? [],
+    adultAge: activity.prices?.adultAge ?? [],
+    youthsAge: activity.prices?.youthsAge ?? [],
+    childrenAge: activity.prices?.childrenAge ?? [],
+    babiesAge: activity.prices?.babiesAge ?? [],
+  };
   // Mock de contenido estático (ajusta cuando lo leas desde DB)
   const summary = "Disfruta de la belleza de la Isla Saona en una excursión desde Punta Cana, con almuerzo buffet y bar libre. Relájate en sus playas de arena blanca y nada en sus aguas cristalinas.";
   const highlights = ["Cancelación gratuita", "Reserva ahora y paga después", "Guía: Español / Inglés", "Comprobación de disponibilidad según horario"];
@@ -74,7 +96,7 @@ export default async function ActivityDetailPage({ params }: { params: { slug: s
         </div>
 
         {/* COL DERECHA (tarjeta reserva) */}
-        <BookingForm id={activity.id} price={priceNum} />
+        <BookingForm id={activity.id} prices={pricesPeople} />
       </div>
     </div>
   );
