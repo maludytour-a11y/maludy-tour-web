@@ -1,0 +1,36 @@
+services:
+  maludy-db:
+    image: postgres:15.3-alpine
+    container_name: maludy-db
+    ports:
+      - '5432:5432'
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: maludy
+      POSTGRES_PASSWORD: maludy123@
+      POSTGRES_DB: maludy_db
+    volumes:
+      - maludy-db-data:/var/lib/postgresql/data
+    networks:
+      - maludy-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U maludy -d maludy_db"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+  maludy-adminer:
+    image: adminer:4.8.1
+    container_name: maludy-adminer
+    ports:
+      - "8080:8080"
+    restart: unless-stopped
+    networks:
+      - maludy-network
+
+networks:
+  maludy-network:
+    driver: bridge
+    
+volumes:
+  maludy-db-data:
