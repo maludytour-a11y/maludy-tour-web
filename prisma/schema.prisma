@@ -1,0 +1,118 @@
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum ImageType {
+  MAIN
+  ACTIVITY
+  REVIEW
+}
+
+enum BadgeType {
+  NEW
+  POPULAR
+  SEASON
+}
+
+enum Languages {
+  ES
+  EN
+  FR
+}
+
+enum PaymentMethod {
+  PAYPAL
+  CARD
+  CASH
+}
+
+enum PaymentStatus {
+  PAID
+  PENDING
+}
+
+model Activitie {
+  id String         @id @default(uuid())
+  title String
+  descripcion String
+  shortDescription String
+  location String
+  duration String
+  rating Decimal
+  reviews Int
+  badge BadgeType
+  languages Languages
+  images Image[]
+  booking Booking[]
+  prices Prices?
+  schedules String[]
+  SlugWhatYouDo String[]
+  includes String[]
+  notSuitable String[]
+  createdAt DateTime @default(now())
+  updateAt DateTime @updatedAt
+}
+
+model Image {
+  id String @id @default(uuid())
+  url String
+  type ImageType
+  alt String
+  width Int
+  height Int
+  storage String
+  activityId String
+  activitie Activitie @relation(fields: [activityId], references: [id])
+  createdAt DateTime @default(now())
+  updateAt DateTime @updatedAt
+}
+
+model Prices {
+  id String @id @default(uuid())
+  seniorPrice Int
+  adultPrice Int
+  youthsPrice Int
+  childrenPrice Int
+  babiesPrice Int
+  seniorAge Int[]
+  adultAge Int[]
+  youthsAge Int[]
+  childrenAge Int[]
+  babiesAge Int[]
+  activitie Activitie @relation(fields: [activityId], references: [id])
+  activityId String @unique
+  createdAt DateTime @default(now())
+  updateAt DateTime @updatedAt
+}
+
+model Booking {
+  id String @id @default(uuid())
+  customerName String
+  customerEmail String
+  customerPhone String
+  no String @unique
+  date DateTime
+  name String
+  seniors Int
+  adults Int
+  youths Int
+  children Int
+  babies Int
+  paymentMethod PaymentMethod
+  paymentStatus PaymentStatus
+  totalPrice Int
+  pickupLocation String
+  pickupTime String
+  schedule String
+  activityId String
+  activitie Activitie @relation(fields: [activityId], references: [id])
+  createdAt DateTime @default(now())
+  updateAt DateTime @updatedAt
+}
