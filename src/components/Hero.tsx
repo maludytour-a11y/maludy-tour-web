@@ -2,11 +2,10 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { MessageCircle } from "lucide-react";
-
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import Rate from "@/components/ui/rate";
+import { agencyInfo } from "@/config";
 
 export const Hero = () => {
   return (
@@ -25,29 +24,32 @@ export const Hero = () => {
             </Badge>
 
             <h1 className="text-4xl md:text-5xl font-extrabold leading-tight text-neutral-900">
-              TOUR GUIADO <span className="text-emerald-700">VAMOS AL CAMPO</span>
-              <br /> DESDE PUNTA CANA
+              {agencyInfo.mainActivity.titleText1} <span className="text-emerald-700">{agencyInfo.mainActivity.titleText2}</span>
+              <br /> {agencyInfo.mainActivity.titleText3}
             </h1>
 
-            <p className="mt-4 text-neutral-600 text-base md:text-lg">Disfruta de un día de aventura y cultura dominicana: salto de agua, basílica, finca de cacao y almuerzo típico. Grupo reducido y guía local.</p>
+            <p className="mt-4 text-neutral-600 text-base md:text-lg">{agencyInfo.mainActivity.summaryText}</p>
 
             <div className="mt-3 flex items-center gap-2">
               <Rate value={5} />
-              <span className="text-sm text-neutral-500">4.9 (1,245 reseñas)</span>
+              <span className="text-sm text-neutral-500">
+                {agencyInfo.mainActivity.rating} ({agencyInfo.mainActivity.reviews} reseñas)
+              </span>
             </div>
 
             <div className="mt-6 flex flex-wrap items-center gap-3">
-              <Button asChild className="rounded-full bg-amber-500 hover:bg-amber-600 px-6 py-5 h-auto text-base">
-                <Link href="/booking?tour=campo">Booking Now</Link>
+              <Button asChild className="rounded-full bg-amber-500 hover:bg-amber-600 px-4 py-5 h-auto text-base">
+                <Link href={`activities/${agencyInfo.mainActivity.id}`}>Booking Now</Link>
               </Button>
 
-              <Button asChild variant="outline" className="rounded-full px-6 py-5 h-auto text-base">
+              <Button asChild variant="outline" className="rounded-full px-4 py-5 h-auto text-base">
                 <Link href="/activities">Otras actividades</Link>
               </Button>
 
-              <Button asChild variant="outline" className="rounded-full px-4 py-5 h-auto text-base flex items-center gap-2">
-                <a href="https://wa.me/0000000000" target="_blank" rel="noopener noreferrer">
-                  <MessageCircle className="h-4 w-4" /> Consultar por WhatsApp
+              <Button asChild variant="outline" className="rounded-full px-3 py-5 h-auto text-base flex items-center gap-2">
+                <a href={`https://wa.me/${agencyInfo.contact.phone}`} target="_blank" rel="noopener noreferrer">
+                  <Image className="w-7 h-auto" src={"/whatsapp.svg"} alt={`${agencyInfo.name}-WhatsApp`} width={16} height={16} />
+                  Consultar por WhatsApp
                 </a>
               </Button>
             </div>
@@ -55,8 +57,8 @@ export const Hero = () => {
             <ul className="mt-6 text-sm text-neutral-500 grid grid-cols-2 gap-y-1 max-w-sm">
               <li>• Cancelación gratuita</li>
               <li>• Recogida en hotel</li>
-              <li>• Duración 7–8 h</li>
-              <li>• Idiomas: ES / EN</li>
+              <li>• Duración {agencyInfo.mainActivity.duration}</li>
+              <li>• Idiomas: {agencyInfo.mainActivity.languages}</li>
             </ul>
           </div>
 
@@ -66,21 +68,21 @@ export const Hero = () => {
               {/* grande izquierda */}
               <div className="col-span-2 sm:col-span-2">
                 <div className="rounded-3xl overflow-hidden shadow-lg">
-                  <Image src="/images/waterfall.jpg" alt="Cascada" width={900} height={600} className="h-64 md:h-80 w-full object-cover" priority />
+                  <Image src={agencyInfo.mainActivity.img1} alt="Cascada" width={900} height={600} className="h-64 md:h-80 w-full object-cover" priority />
                 </div>
               </div>
 
               {/* tarjeta */}
               <div className="rounded-3xl overflow-hidden shadow-lg">
-                <Image src="/images/basilica.jpeg" alt="Basílica" width={600} height={400} className="h-40 md:h-full w-full object-cover" />
+                <Image src={agencyInfo.mainActivity.img2} alt="Basílica" width={600} height={400} className="h-40 md:h-full w-full object-cover" />
               </div>
 
               <div className="rounded-3xl overflow-hidden shadow-lg">
-                <Image src="/images/tabaco.jpg" alt="Finca bananos" width={600} height={400} className="h-40 md:h-48 w-full object-cover" />
+                <Image src={agencyInfo.mainActivity.img3} alt="Finca bananos" width={600} height={400} className="h-40 md:h-48 w-full object-cover" />
               </div>
 
               <div className="rounded-3xl overflow-hidden shadow-lg">
-                <Image src="/images/caballo.jpg" alt="Experiencia local" width={600} height={400} className="h-40 md:h-48 w-full object-cover" />
+                <Image src={agencyInfo.mainActivity.img4} alt="Experiencia local" width={600} height={400} className="h-40 md:h-48 w-full object-cover" />
               </div>
             </div>
 
@@ -88,7 +90,7 @@ export const Hero = () => {
             <div className="absolute -bottom-4 left-4 bg-white/90 backdrop-blur rounded-2xl shadow-md px-4 py-3">
               <p className="text-xs text-neutral-500">Desde</p>
               <p className="text-2xl font-bold text-neutral-900">
-                $59 <span className="text-sm font-medium text-neutral-500">/persona</span>
+                ${agencyInfo.mainActivity.price} <span className="text-sm font-medium text-neutral-500">/persona</span>
               </p>
             </div>
           </div>

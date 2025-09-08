@@ -1,4 +1,4 @@
-import { put, del } from "@vercel/blob";
+import { put } from "@vercel/blob";
 
 export async function PUT(request: Request) {
   const form = await request.formData();

@@ -1,5 +1,5 @@
-import { db } from "@/app/libs/prisma";
-import { PriceSchema, QueryParams, QuerySchema } from "@/app/schemas";
+import { db } from "@/lib/prisma";
+import { PriceSchema, QueryParams, QuerySchema } from "@/schemas";
 import { NextResponse } from "next/server";
 import z from "zod";
 

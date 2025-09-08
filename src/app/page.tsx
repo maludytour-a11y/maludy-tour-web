@@ -1,4 +1,5 @@
 import { Hero, NavBar, OtherActivities } from "@/components";
+import Footer from "@/components/Footer";
 
 export default function Home() {
   return (
@@ -9,6 +10,7 @@ export default function Home() {
         {/* ← columna */}
         <Hero />
         <OtherActivities />
+        <Footer />
       </main>
     </div>
   );

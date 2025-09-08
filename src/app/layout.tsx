@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import { Montserrat, Ubuntu } from "next/font/google";
 import "./globals.css";
-import { ReduxProviders } from "./context/redux/providers";
+import { ReduxProviders } from "../context/redux/providers";
+import { agencyInfo } from "@/config";
 
 const montserrat = Montserrat({
   variable: "--font-montserrat",
@@ -14,8 +15,8 @@ const ubuntu = Ubuntu({
 });
 
 export const metadata: Metadata = {
-  title: "Maludy Tour",
-  description: "",
+  title: agencyInfo.metadata.home.title,
+  description: agencyInfo.metadata.home.description,
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

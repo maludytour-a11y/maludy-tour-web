@@ -1,8 +1,8 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
-import { db } from "@/app/libs/prisma";
 import { BadgeType, Languages, Prisma } from "@/generated/prisma";
-import { ActivitieSchema, QuerySchema } from "@/app/schemas";
+import { ActivitieSchema, QuerySchema } from "@/schemas";
+import { db } from "@/lib/prisma";
 
 export interface IActivityItemResponse {
   id: string;
@@ -66,6 +66,7 @@ export async function GET(req: Request) {
         select: {
           id: true,
           title: true,
+          schedules: true,
           location: true,
           duration: true,
           rating: true, // Decimal en Prisma → convertir a number abajo

@@ -52,6 +52,10 @@ model Activitie {
   images Image[]
   booking Booking[]
   prices Prices?
+  schedules String[]
+  SlugWhatYouDo String[]
+  includes String[]
+  notSuitable String[]
   createdAt DateTime @default(now())
   updateAt DateTime @updatedAt
 }
@@ -90,6 +94,10 @@ model Prices {
 
 model Booking {
   id String @id @default(uuid())
+  customerName String
+  customerEmail String
+  customerPhone String
+  no String @unique
   date DateTime
   name String
   seniors Int

@@ -1,4 +1,5 @@
 "use client";
+import { NavBar } from "@/components";
 import Rate from "@/components/ui/rate";
 import { agencyInfo } from "@/config";
 
@@ -8,6 +9,7 @@ export function SlugHeader({ title, rating, reviews }: { title: string; rating: 
 
   return (
     <header className="mb-6">
+      <NavBar />
       <h1 className="text-2xl md:text-3xl font-extrabold leading-tight">{title}</h1>
       <div className="mt-2 flex flex-wrap items-center gap-3 text-sm text-neutral-600">
         <span className="flex items-center gap-2">

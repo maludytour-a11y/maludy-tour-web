@@ -1,5 +1,6 @@
-import { db } from "@/app/libs/prisma";
-import { ImageSchema } from "@/app/schemas";
+import { db } from "@/lib/prisma";
+
+import { ImageSchema } from "@/schemas";
 import { ImageType } from "@/generated/prisma";
 import { put } from "@vercel/blob";
 import { NextResponse } from "next/server";

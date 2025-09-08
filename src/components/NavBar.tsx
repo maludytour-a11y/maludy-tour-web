@@ -9,6 +9,7 @@ import { agencyInfo } from "@/config";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger, SheetFooter, SheetClose } from "@/components/ui/sheet";
+import { waHref } from "@/utils/functions";
 
 /* ---------------- NAV ---------------- */
 
@@ -50,7 +51,7 @@ export const NavBar = () => {
 
           <Button asChild variant="outline" className="rounded-full">
             <Link href={`https://wa.me/${agencyInfo.contact.phone}`} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2">
-              <MessageCircle className="h-4 w-4" />
+              <Image className="w-7 h-auto" src={"/whatsapp.svg"} alt={`${agencyInfo.name}-WhatsApp`} width={16} height={16} />
               WhatsApp
             </Link>
           </Button>
@@ -70,7 +71,7 @@ export const NavBar = () => {
               <SheetHeader>
                 <SheetTitle className="flex items-center gap-2">
                   <Image src="/logo-transparent.svg" alt="Maludy Tour" width={36} height={36} className="rounded" />
-                  Maludy Tour
+                  {agencyInfo.name}
                 </SheetTitle>
               </SheetHeader>
 
@@ -95,10 +96,10 @@ export const NavBar = () => {
               <SheetFooter className="mt-6">
                 <SheetClose asChild>
                   <Button asChild className="w-full rounded-full">
-                    <Link href={`https://wa.me/${agencyInfo.contact.phone}`} target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-2">
-                      <MessageCircle className="h-4 w-4" />
+                    <a href={waHref()} target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-2">
+                      <Image className="w-7 h-auto" src={"/whatsapp.svg"} alt={`${agencyInfo.name}-WhatsApp`} width={16} height={16} />
                       WhatsApp
-                    </Link>
+                    </a>
                   </Button>
                 </SheetClose>
               </SheetFooter>

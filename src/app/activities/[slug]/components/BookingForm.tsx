@@ -3,7 +3,7 @@
 import { useMemo, useState } from "react";
 import { Controller, useForm, useWatch } from "react-hook-form";
 import { format } from "date-fns";
-import { da, es } from "date-fns/locale";
+import { es } from "date-fns/locale";
 import { Users, Calendar as CalendarIcon, MapPin, Mail, Phone, Info, User, Minus, Plus } from "lucide-react";
 
 // shadcn/ui
@@ -16,8 +16,9 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Calendar } from "@/components/ui/calendar";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
-import { useAppDispatch, useAppSelector } from "@/app/context/redux/hooks";
-import { bookingSlice, setBookingData } from "@/app/context/redux/features/bookingSlice";
+import { useAppDispatch, useAppSelector } from "@/context/redux/hooks";
+import { setBooking, setCustomer } from "@/context/redux/features/bookingSlice";
+import { useRouter } from "next/navigation";
 
 /* ---------------- Tipos ---------------- */
 
@@ -35,6 +36,7 @@ type FormValues = {
   phone: string;
   pickup: string;
   date: Date | null;
+  schedule: string; // 👈 nuevo campo controlado por Select
   language: "ES" | "EN";
   notes?: string;
   guests: Guests;
@@ -56,6 +58,8 @@ export type PricesDTO = {
 interface BookingFormProps {
   id: string;
   prices: PricesDTO;
+  schedules: string[];
+  activityName: string;
 }
 
 /* ---------------- Utils ---------------- */
@@ -94,49 +98,20 @@ function Counter({ value, onChange, disabled }: { value: number; onChange: (n: n
 
 /* ---------------- Componente ---------------- */
 
-export function BookingForm({ id, prices }: BookingFormProps) {
+export function BookingForm({ id, prices, schedules, activityName }: BookingFormProps) {
   const dispatch = useAppDispatch();
   const bookingData = useAppSelector((state) => state.bookingReducer.booking);
+  const route = useRouter();
 
-  // Construimos la “tabla” de categorías a partir de props
+  // Tabla de categorías desde props
   const categories = useMemo(
     () =>
       [
-        {
-          key: "seniors",
-          label: "Ancianos",
-          price: Number(prices?.seniorPrice ?? 0),
-          ages: prices?.seniorAge ?? [],
-          requiresAdult: false,
-        },
-        {
-          key: "adults",
-          label: "Adultos",
-          price: Number(prices?.adultPrice ?? 0),
-          ages: prices?.adultAge ?? [],
-          requiresAdult: false,
-        },
-        {
-          key: "youths",
-          label: "Jóvenes",
-          price: Number(prices?.youthsPrice ?? 0),
-          ages: prices?.youthsAge ?? [],
-          requiresAdult: true,
-        },
-        {
-          key: "children",
-          label: "Niños",
-          price: Number(prices?.childrenPrice ?? 0),
-          ages: prices?.childrenAge ?? [],
-          requiresAdult: true,
-        },
-        {
-          key: "babies",
-          label: "Bebés",
-          price: Number(prices?.babiesPrice ?? 0),
-          ages: prices?.babiesAge ?? [],
-          requiresAdult: true,
-        },
+        { key: "seniors", label: "Ancianos", price: Number(prices?.seniorPrice ?? 0), ages: prices?.seniorAge ?? [], requiresAdult: false },
+        { key: "adults", label: "Adultos", price: Number(prices?.adultPrice ?? 0), ages: prices?.adultAge ?? [], requiresAdult: false },
+        { key: "youths", label: "Jóvenes", price: Number(prices?.youthsPrice ?? 0), ages: prices?.youthsAge ?? [], requiresAdult: true },
+        { key: "children", label: "Niños", price: Number(prices?.childrenPrice ?? 0), ages: prices?.childrenAge ?? [], requiresAdult: true },
+        { key: "babies", label: "Bebés", price: Number(prices?.babiesPrice ?? 0), ages: prices?.babiesAge ?? [], requiresAdult: true },
       ] as const,
     [prices]
   );
@@ -162,27 +137,18 @@ export function BookingForm({ id, prices }: BookingFormProps) {
       phone: "",
       pickup: "",
       date: null,
+      schedule: "", // 👈 sin valor inicial, forzamos selección
       language: "ES",
       notes: "",
-      guests: {
-        seniors: 0,
-        adults: 2,
-        youths: 0,
-        children: 0,
-        babies: 0,
-      },
+      guests: { seniors: 0, adults: 2, youths: 0, children: 0, babies: 0 },
     },
   });
 
   const guests = useWatch({ control, name: "guests" }) as Guests | undefined;
 
   const adultCompanions = (guests?.adults ?? 0) + (guests?.seniors ?? 0);
-
-  // Cálculos usando la tabla de categorías
   const payingCount = (["seniors", "adults", "youths", "children"] as (keyof Guests)[]).map((k) => guests?.[k] ?? 0).reduce((a, b) => a + b, 0);
-
   const totalPeople = payingCount + (guests?.babies ?? 0);
-
   const totalPrice = (categories as readonly { key: keyof Guests; price: number }[]).map((c) => (guests?.[c.key] ?? 0) * (c.price ?? 0)).reduce((a, b) => a + b, 0);
 
   const summaryText = useMemo(() => {
@@ -198,32 +164,54 @@ export function BookingForm({ id, prices }: BookingFormProps) {
     const { adults, seniors, children, babies, youths } = data.guests;
     const isoDate = data.date ? data.date.toISOString() : null;
 
-    console.log(data.guests);
-    const payload: bookingSlice = {
+    const payload = {
       customer: {
         name: data.name,
         email: data.email,
         phone: data.phone,
       },
       booking: {
-        date: isoDate,
+        no: "pendding",
+        date: isoDate, // serializable
         activityId: id,
-        activityName: "Colocar nombre de excursion",
+        activityName,
         seniors,
         adults,
         youths,
         children,
         babies,
-        totalPrice: 0,
+        totalPrice,
         pickupLocation: data.pickup,
-        schedule: "7:00", // colocar el shedule seleccionado eligiendo de un array que venga de la actividad con los horarios disponibles
+        schedule: data.schedule,
       },
     };
 
-    dispatch(setBookingData(payload));
-    alert("¡Solicitud de reserva enviada! Te contactaremos por correo.");
+    dispatch(
+      setCustomer({
+        name: data.name,
+        email: data.email,
+        phone: data.phone,
+      })
+    );
+
+    dispatch(
+      setBooking({
+        activityId: id,
+        activityName: activityName,
+        date: isoDate, // <-- string
+        seniors: data.guests.seniors,
+        adults: data.guests.adults,
+        youths: data.guests.youths,
+        children: data.guests.children,
+        babies: data.guests.babies,
+        totalPrice, // tu cálculo
+        pickupLocation: data.pickup,
+        schedule: data.schedule, // del Select
+      })
+    );
+
     reset();
-    console.log("booking", bookingData);
+    route.push("/checkout");
   };
 
   // Overlay de personas (Popover)
@@ -432,6 +420,31 @@ export function BookingForm({ id, prices }: BookingFormProps) {
               )}
             />
             {errors.date && <p className="text-destructive text-xs">{errors.date.message as string}</p>}
+          </div>
+
+          {/* Horario (Select) */}
+          <div className="grid gap-1.5">
+            <Label>Horario</Label>
+            <Controller
+              name="schedule"
+              control={control}
+              rules={{ required: "Selecciona un horario" }}
+              render={({ field }) => (
+                <Select value={field.value} onValueChange={field.onChange} disabled={!schedules || schedules.length === 0}>
+                  <SelectTrigger className="w-full">
+                    <SelectValue placeholder={schedules && schedules.length > 0 ? "Selecciona un horario" : "No hay horarios disponibles"} />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {schedules?.map((h) => (
+                      <SelectItem key={h} value={h}>
+                        {h}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              )}
+            />
+            {errors.schedule && <p className="text-destructive text-xs">{errors.schedule.message as string}</p>}
           </div>
 
           {/* Selector de personas (Popover) */}
