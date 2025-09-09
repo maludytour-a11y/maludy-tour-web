@@ -73,10 +73,10 @@ export const SlugGallery = ({ images, title }: SlugGalleryProps) => {
         {/* Controles: anterior / siguiente */}
         {total > 1 && (
           <>
-            <button type="button" onClick={prev} aria-label="Anterior" className="absolute left-3 top-1/2 -translate-y-1/2 inline-flex h-9 w-9 items-center justify-center rounded-full bg-black/55 text-white backdrop-blur hover:bg-black/70 focus:outline-none focus:ring-2 focus:ring-white/60">
+            <button type="button" onClick={prev} aria-label="Anterior" className="cursor-pointer absolute left-3 top-1/2 -translate-y-1/2 inline-flex h-9 w-9 items-center justify-center rounded-full bg-black/55 text-white backdrop-blur hover:bg-black/70 focus:outline-none focus:ring-2 focus:ring-white/60">
               <ChevronLeft className="h-5 w-5" />
             </button>
-            <button type="button" onClick={next} aria-label="Siguiente" className="absolute right-3 top-1/2 -translate-y-1/2 inline-flex h-9 w-9 items-center justify-center rounded-full bg-black/55 text-white backdrop-blur hover:bg-black/70 focus:outline-none focus:ring-2 focus:ring-white/60">
+            <button type="button" onClick={next} aria-label="Siguiente" className="cursor-pointer absolute right-3 top-1/2 -translate-y-1/2 inline-flex h-9 w-9 items-center justify-center rounded-full bg-black/55 text-white backdrop-blur hover:bg-black/70 focus:outline-none focus:ring-2 focus:ring-white/60">
               <ChevronRight className="h-5 w-5" />
             </button>
           </>
@@ -87,7 +87,7 @@ export const SlugGallery = ({ images, title }: SlugGalleryProps) => {
           <span className="rounded-full bg-black/60 px-2 py-1 text-xs text-white">
             {current + 1} / {total}
           </span>
-          <button type="button" onClick={open} aria-label="Ver en pantalla completa" className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-black/55 text-white backdrop-blur hover:bg-black/70 focus:outline-none focus:ring-2 focus:ring-white/60">
+          <button type="button" onClick={open} aria-label="Ver en pantalla completa" className="cursor-pointer inline-flex h-8 w-8 items-center justify-center rounded-full bg-black/55 text-white backdrop-blur hover:bg-black/70 focus:outline-none focus:ring-2 focus:ring-white/60">
             <Maximize2 className="h-4 w-4" />
           </button>
         </div>
@@ -100,7 +100,7 @@ export const SlugGallery = ({ images, title }: SlugGalleryProps) => {
             const active = i === current;
             return (
               <button key={img.url + i} type="button" aria-label={`Ver imagen ${i + 1}`} aria-pressed={active} onClick={() => setIdx(i)} className={["relative h-16 w-24 shrink-0 overflow-hidden rounded-lg ring-1 transition", active ? "ring-amber-500" : "ring-black/10 hover:ring-amber-300"].join(" ")}>
-                <Image src={img.url} alt={`${title} miniatura ${i + 1}`} fill className="object-cover select-none" draggable={false} />
+                <Image src={img.url} alt={`${title} miniatura ${i + 1}`} fill className="object-cover select-none cursor-pointer" draggable={false} />
                 {active && <div className="absolute inset-0 ring-2 ring-inset ring-amber-500/70" />}
               </button>
             );
@@ -118,10 +118,10 @@ export const SlugGallery = ({ images, title }: SlugGalleryProps) => {
 
             {total > 1 && (
               <>
-                <button type="button" onClick={prev} aria-label="Anterior" className="absolute left-5 top-1/2 -translate-y-1/2 inline-flex h-10 w-10 items-center justify-center rounded-full bg-white/15 text-white hover:bg-white/25">
+                <button type="button" onClick={prev} aria-label="Anterior" className="cursor-pointer absolute left-5 top-1/2 -translate-y-1/2 inline-flex h-10 w-10 items-center justify-center rounded-full bg-white/15 text-white hover:bg-white/25">
                   <ChevronLeft className="h-6 w-6" />
                 </button>
-                <button type="button" onClick={next} aria-label="Siguiente" className="absolute right-5 top-1/2 -translate-y-1/2 inline-flex h-10 w-10 items-center justify-center rounded-full bg-white/15 text-white hover:bg-white/25">
+                <button type="button" onClick={next} aria-label="Siguiente" className="cursor-pointer absolute right-5 top-1/2 -translate-y-1/2 inline-flex h-10 w-10 items-center justify-center rounded-full bg-white/15 text-white hover:bg-white/25">
                   <ChevronRight className="h-6 w-6" />
                 </button>
               </>
