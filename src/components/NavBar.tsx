@@ -45,7 +45,7 @@ export const NavBar = () => {
 
         {/* acciones derechas (desktop) */}
         <div className="hidden xl:flex items-center gap-4">
-          <Badge variant="secondary" className="text-sm px-3 py-1 rounded-full">
+          <Badge variant="secondary" className="text-sm px-3 py-1 rounded-full cursor-pointer">
             ES 🇪🇸
           </Badge>
 

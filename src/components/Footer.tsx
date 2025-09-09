@@ -141,7 +141,7 @@ export default function Footer() {
               </p>
               <form className="mt-3 flex items-center gap-2" action="/api/subscribe" method="POST">
                 <input name="email" type="email" placeholder="tu@email.com" required className="w-full rounded-xl border bg-white px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-emerald-500 dark:bg-zinc-900" />
-                <button type="submit" className="shrink-0 rounded-xl bg-emerald-600 px-3 py-2 text-sm font-medium text-white hover:bg-emerald-700 transition">
+                <button type="submit" className=" cursor-pointer shrink-0 rounded-xl bg-emerald-600 px-3 py-2 text-sm font-medium text-white hover:bg-emerald-700 transition">
                   Suscribirme
                 </button>
               </form>

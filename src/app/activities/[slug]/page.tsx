@@ -138,7 +138,7 @@ export default async function ActivityDetailPage({ params }: { params: Promise<{
         <div className="lg:col-span-2">
           <SlugGallery images={imageUrls} title={activity.title} />
 
-          <p className="mt-4 text-neutral-700">{activity.shortDescription}</p>
+          <p className="mt-4 text-neutral-700 text-justify">{activity.shortDescription}</p>
 
           <SlugGeneralInformation highlights={highlights} />
 
