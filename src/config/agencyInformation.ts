@@ -100,8 +100,8 @@ export const agencyInfo: IAgencyInfo = {
     titleText2: "VAMOS AL CAMPO",
     titleText3: "DESDE PUNTA CANA",
     summaryText: "Disfruta de un día de aventura y cultura dominicana: salto de agua, basílica, finca de cacao y almuerzo típico. Grupo reducido y guía local.",
-    rating: 5,
-    reviews: 1245,
+    rating: 4.9,
+    reviews: 585,
     duration: "7–8 h",
     languages: "ES / EN",
     img1: "/images/casa-tipica.jpg",
@@ -109,6 +109,6 @@ export const agencyInfo: IAgencyInfo = {
     img3: "/images/tabaco.jpg",
     img4: "/images/caballo.jpg",
     price: 55,
-    id: "c90e90f3-7533-444c-8727-89181b4dfc67",
+    id: "a0b3445c-b925-4b63-9d72-158fafafb8f8",
   },
 };
