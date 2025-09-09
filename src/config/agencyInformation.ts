@@ -82,7 +82,7 @@ export const agencyInfo: IAgencyInfo = {
   },
   providers: {
     resend: {
-      domain: "<booking@confirm.canatransferrc.com>",
+      domain: "<booking@confirm.maludytour.com>",
       apikkey: process.env.RESEND_API_KEY?.toString() || "",
     },
   },
@@ -100,7 +100,7 @@ export const agencyInfo: IAgencyInfo = {
     titleText2: "VAMOS AL CAMPO",
     titleText3: "DESDE PUNTA CANA",
     summaryText: "Disfruta de un día de aventura y cultura dominicana: salto de agua, basílica, finca de cacao y almuerzo típico. Grupo reducido y guía local.",
-    rating: 4.9,
+    rating: 5,
     reviews: 1245,
     duration: "7–8 h",
     languages: "ES / EN",
@@ -108,7 +108,7 @@ export const agencyInfo: IAgencyInfo = {
     img2: "/images/basilica.jpeg",
     img3: "/images/tabaco.jpg",
     img4: "/images/caballo.jpg",
-    price: 40,
+    price: 55,
     id: "c90e90f3-7533-444c-8727-89181b4dfc67",
   },
 };
