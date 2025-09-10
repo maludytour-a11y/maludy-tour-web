@@ -73,5 +73,449 @@
       "Cookies": "Cookies",
       "Terms": "Términos"
     }
+  },
+  "ActivitiesPage": {
+    "SearchPlaceholder": "Busca por nombre (ej: Saona, Buggy...)",
+    "Activities": "Actividades",
+    "Results": "resultados",
+    "Result": "resultado",
+    "NotFoundActivities": "No encontramos actividades",
+    "For": "para"
+  },
+  "BookingPage": {
+    "title": "Consulta tu reserva",
+    "home": "Inicio",
+    "EnterNumber": "Introduce tu número de reserva",
+    "YouWillFindItIn": "Lo encontrarás en el correo de confirmación (ej: MT-ABC123)",
+    "PlaceholderBookingNo": "Ej: MT-ABC123",
+    "BookingNoInputTitle": "Usa solo letras, números y guiones (sin espacios)",
+    "Search": "Buscar",
+    "Searching": "Buscando…",
+
+    "ErrorEnterNumber": "Introduce tu número de reserva.",
+    "ErrorLookupFailed": "No se pudo consultar la reserva. Inténtalo nuevamente.",
+    "ErrorNotFound": "No encontramos una reserva con ese número.",
+
+    "BookingNoLabel": "N.º de reserva:",
+    "DateLabel": "Fecha:",
+    "ScheduleLabel": "Horario:",
+    "PickupLabel": "Recogida:",
+    "CustomerLabel": "Cliente",
+    "PeopleLabel": "Personas",
+    "MethodLabel": "Método:",
+    "TotalLabel": "Total",
+    "NotAvailable": "—",
+
+    "Guests": {
+      "Seniors": "Ancianos",
+      "Adults": "Adultos",
+      "Youths": "Jóvenes",
+      "Children": "Niños",
+      "Babies": "Bebés"
+    },
+
+    "PaymentStatus": {
+      "PAID": "Pagada",
+      "PENDING": "Pendiente",
+      "CANCELLED": "Cancelada",
+      "UNKNOWN": "{status}"
+    },
+
+    "Help": {
+      "NeedHelpTitle": "¿Necesitas ayuda?",
+      "NeedHelpSubtitle": "Estamos aquí para ti.",
+      "ContactWhatsApp": "WhatsApp",
+      "ContactEmail": "Escríbenos por email"
+    }
+  },
+  "AboutPage": {
+    "Meta": {
+      "Title": "Acerca de {agencyName} — Quiénes somos",
+      "OGTitle": "Acerca de {agencyName}",
+      "Description": "Conoce a {agencyName}: un equipo local apasionado por crear experiencias auténticas en Punta Cana, con atención cercana, guías bilingües y soporte confiable.",
+      "OGDescription": "Conoce a {agencyName}: un equipo local apasionado por crear experiencias auténticas en Punta Cana."
+    },
+    "WhoWeAreTitle": "¿Quiénes somos?",
+    "SloganText": "Turismo con esencia local: cercanía, seguridad y calidad.",
+    "Text1": "Creemos que un buen tour es mucho más que visitar lugares. Es vivir el destino con tranquilidad, con guías que conocen cada detalle y un equipo que te acompaña de principio a fin.",
+    "Text2": "Trabajamos con grupos reducidos y proveedores confiables para asegurar una experiencia cómoda, segura y memorable. Nuestro objetivo es que disfrutes sin preocupaciones: logística clara, comunicación constante y atención personalizada.",
+    "Text3": "Ya sea que viajes en familia, con amigos o en pareja, te ayudamos a encontrar la actividad ideal, adaptada a tus tiempos e intereses.",
+    "ApproachTitle": "Nuestro enfoque",
+    "ApproachSubtitle": "Lo que guía cada experiencia",
+    "Features": {
+      "TrustSafety": "Confianza y seguridad",
+      "ComfortableGroups": "Grupos cómodos",
+      "PunctualClarity": "Puntualidad y claridad",
+      "LocalExpertise": "Experiencia local",
+      "VerifiedQuality": "Calidad verificada",
+      "PersonalizedService": "Atención personalizada"
+    },
+    "WhyChooseUsTitle": "¿Por qué elegirnos?",
+    "WhyChooseUsSubtitle": "Beneficios claros y centrados en ti",
+    "Reasons": {
+      "CloseSupportTitle": "Soporte cercano",
+      "CloseSupportDesc": "Acompañamiento antes, durante y después del tour.",
+      "BilingualGuidesTitle": "Guías bilingües",
+      "BilingualGuidesDesc": "Comunicación fluida en Español e Inglés.",
+      "ReliableSchedulesTitle": "Horarios confiables",
+      "ReliableSchedulesDesc": "Itinerarios claros y coordinaciones puntuales.",
+      "CuratedRoutesTitle": "Rutas curadas",
+      "CuratedRoutesDesc": "Seleccionamos experiencias con la mejor relación calidad-precio.",
+      "SecureBookingsTitle": "Reservas seguras",
+      "SecureBookingsDesc": "Confirmaciones por email y comprobante en PDF.",
+      "TotalTransparencyTitle": "Transparencia total",
+      "TotalTransparencyDesc": "Lo que ves es lo que obtienes. Sin sorpresas."
+    },
+    "CoverageTitle": "Cobertura",
+    "CoverageSubtitle": "Operamos en Punta Cana y alrededores",
+    "LocatedAtPrefix": "Estamos ubicados en",
+    "CoverageText": "Coordinamos recogidas en hoteles y puntos de encuentro, y trabajamos con operadores locales que cumplen altos estándares de calidad y seguridad.",
+    "ViewOnGoogleMaps": "Ver en Google Maps",
+    "QuickContactTitle": "Contacto rápido",
+    "QuickContactSubtitle": "Estamos listos para ayudarte",
+    "PhoneLabel": "Teléfono",
+    "EmailLabel": "Correo",
+    "WebsiteLabel": "Sitio web"
+  },
+  "ActivityDetailPage": {
+    "Meta": {
+      "FallbackTitle": "Actividad | {agencyName}",
+      "FallbackDescription": "Descubre actividades inolvidables en {agencyName}",
+      "NotFoundTitle": "Actividad no encontrada | {agencyName}",
+      "NotFoundDescription": "La actividad que buscas no está disponible."
+    },
+    "Highlights": {
+      "FreeCancellation": "Cancelación gratuita",
+      "BookNowPayLater": "Reserva ahora y paga después",
+      "GuideLanguages": "Guía: Español / Inglés"
+    },
+    "Header": {
+      "Reviews": "{count, plural, one {# reseña} other {# reseñas}}",
+      "ProviderLabel": "Proveedor"
+    },
+    "Gallery": {
+      "AriaMain": "Galería de imágenes: {title}",
+      "Prev": "Anterior",
+      "Next": "Siguiente",
+      "Fullscreen": "Ver en pantalla completa",
+      "Close": "Cerrar",
+      "ThumbAria": "Ver imagen {index}",
+      "ThumbAlt": "{title} miniatura {index}",
+      "MainAlt": "{title} ({current}/{total})",
+      "MainAltExpanded": "{title} (ampliada {current}/{total})",
+      "LightboxAria": "Visor de imágenes a pantalla completa",
+      "Counter": "{current} / {total}",
+      "NoImages": "No hay imágenes disponibles",
+      "PlaceholderAlt": "Espacio reservado para imagen"
+    },
+    "GeneralInformation": {
+      "Title": "Información general",
+      "AriaList": "Lista de información general"
+    },
+    "WhatYouDo": {
+      "Title": "Qué harás",
+      "AriaList": "Lista de actividades del itinerario",
+      "Empty": "No hay información disponible"
+    },
+    "Detail": {
+      "Title": "En detalle",
+      "Aria": "Descripción detallada de la actividad",
+      "Empty": "No hay información disponible"
+    },
+    "WhatsIncluded": {
+      "IncludesTitle": "Qué incluye",
+      "NotSuitableTitle": "No apto para",
+      "IncludesAria": "Lista de elementos incluidos",
+      "NotSuitableAria": "Lista de perfiles no aptos",
+      "EmptyIncludes": "No hay información disponible sobre lo que incluye.",
+      "EmptyNotSuitable": "No hay información disponible sobre restricciones."
+    },
+    "Reviews": {
+      "Title": "Reseñas destacadas",
+      "Empty": "Aún no hay reseñas.",
+      "AriaList": "Lista de reseñas destacadas",
+      "ReviewerMeta": "{name} · {date}"
+    }
+  },
+  "BookingForm": {
+    "Badge": {
+      "MaySellOut": "Podría agotarse",
+      "AvailabilityNote": "La disponibilidad puede variar por fecha y tamaño del grupo."
+    },
+    "PriceHeader": {
+      "FromLabel": "Desde",
+      "PerPersonNote": "por persona (según categoría)"
+    },
+    "Summary": {
+      "None": "Selecciona personas",
+      "SelectQty": "Selecciona la cantidad de personas"
+    },
+    "GuestsOverlay": {
+      "SelectByAgeRanges": "Selecciona por rangos de edad",
+      "AgeRangeUnknown": "—",
+      "PerEach": "{price} c/u",
+      "Free": "Gratis",
+      "NeedsAdult": "Necesitas al menos 1 {adult} o {senior} para añadir menores o bebés.",
+      "Total": "Total: {count} {count, plural, one {persona} other {personas}}",
+      "Done": "Hecho"
+    },
+    "Fields": {
+      "Name": {
+        "Label": "Nombre",
+        "Placeholder": "John Doe",
+        "Required": "Tu nombre es requerido",
+        "Min": "Mínimo 2 caracteres"
+      },
+      "Email": {
+        "Label": "Correo",
+        "Placeholder": "example@mail.com",
+        "Required": "El correo es requerido",
+        "Invalid": "Correo inválido"
+      },
+      "Phone": {
+        "Label": "Teléfono",
+        "Placeholder": "+1 (809) 555-1234",
+        "Required": "El teléfono es requerido",
+        "Min": "Teléfono muy corto"
+      },
+      "Pickup": {
+        "Label": "Lugar de recogida",
+        "Placeholder": "Hotel Barceló, lobby principal",
+        "Required": "Indica tu lugar de recogida"
+      },
+      "Date": {
+        "Label": "Fecha",
+        "Placeholder": "Selecciona fecha",
+        "Required": "Selecciona la fecha"
+      },
+      "Schedule": {
+        "Label": "Horario",
+        "Placeholder": "Selecciona un horario",
+        "Empty": "No hay horarios disponibles",
+        "Required": "Selecciona un horario"
+      },
+      "People": {
+        "Label": "Personas",
+        "PayingRequired": "Debes seleccionar al menos 1 persona (pagante)."
+      },
+      "Language": {
+        "Label": "Idioma",
+        "Placeholder": "Selecciona idioma",
+        "Required": "Selecciona idioma",
+        "Options": {
+          "ES": "Español",
+          "EN": "English"
+        }
+      }
+    },
+    "GuestsLabels": {
+      "Seniors": "Ancianos",
+      "Adults": "Adultos",
+      "Youths": "Jóvenes",
+      "Children": "Niños",
+      "Babies": "Bebés"
+    },
+    "Validation": {
+      "MinZero": "No puede ser negativo",
+      "Max99": "Máx. 99"
+    },
+    "Buttons": {
+      "PayNow": "Pagar ahora",
+      "PayNowWithTotal": "Pagar ahora · {total}"
+    }
+  },
+  "Checkout": {
+    "Header": {
+      "Title": "Finaliza tu reserva",
+      "Back": "Volver"
+    },
+    "Alerts": {
+      "MissingCore": "Falta información para completar el pago. Vuelve a la actividad y completa fecha, horario y cantidad de personas.",
+      "ZodIssuesPrefix": "Revisa los campos:",
+      "CreateBookingError": "Error al crear la reserva.",
+      "ServerValidationErrors": "Errores de validación en el servidor.",
+      "Unexpected": "Ocurrió un error inesperado al procesar la reserva."
+    },
+    "SummaryCard": {
+      "ActivityFallback": "Actividad",
+      "Description": "Revisa los detalles antes de pagar.",
+      "Rows": {
+        "Name": "Nombre",
+        "Email": "Correo",
+        "Phone": "Teléfono",
+        "Date": "Fecha",
+        "Schedule": "Horario",
+        "Pickup": "Recogida",
+        "People": "Personas",
+        "Total": "Total"
+      },
+      "Conditions": "Al continuar aceptas nuestras condiciones de servicio y política de cancelación."
+    },
+    "GuestsLabels": {
+      "Seniors": "Ancianos",
+      "Adults": "Adultos",
+      "Youths": "Jóvenes",
+      "Children": "Niños",
+      "Babies": "Bebés"
+    },
+    "PaymentCard": {
+      "Title": "Método de pago",
+      "Description": "Elige cómo deseas pagar tu experiencia.",
+      "PaypalTitle": "PayPal / Tarjeta",
+      "PaypalBadge": "Próximamente",
+      "PaypalDesc": "Paga con PayPal o con tarjeta (sin cuenta). No disponible aún.",
+      "CashTitle": "Pago en efectivo",
+      "CashDesc": "Pagarás en efectivo al momento de la recogida o al inicio de la actividad.",
+      "Trust": {
+        "SecurePayment": "Pago seguro",
+        "PurchaseProtection": "Protección de compra",
+        "PersonalAttention": "Atención personalizada"
+      }
+    },
+    "Buttons": {
+      "ContinueWithPayPal": "Continuar con PayPal",
+      "ConfirmCash": "Confirmar reserva (pago en efectivo)"
+    },
+    "BottomBar": {
+      "Total": "Total"
+    }
+  },
+  "Success": {
+    "Header": {
+      "Title": "¡Reserva confirmada!",
+      "Home": "Inicio"
+    },
+    "Alert": {
+      "Missing": "No encontramos los datos completos de tu reserva. Si ya realizaste el pago, por favor vuelve a la actividad o ponte en contacto con nosotros."
+    },
+    "Card": {
+      "Title": "¡Gracias! Tu reserva se ha completado correctamente",
+      "DescriptionWithEmail": "Te enviamos un correo con la confirmación a {email}. Presenta este comprobante el día de la actividad.",
+      "DescriptionNoEmail": "Te enviamos un correo con la confirmación. Presenta este comprobante el día de la actividad.",
+      "Reference": "Referencia",
+      "TotalPaid": "Total pagado"
+    },
+    "Info": {
+      "Name": "Nombre",
+      "Email": "Correo",
+      "Phone": "Teléfono",
+      "Date": "Fecha",
+      "Schedule": "Horario",
+      "Pickup": "Recogida"
+    },
+    "People": {
+      "Title": "Personas"
+    },
+    "GuestsLabels": {
+      "Seniors": "Ancianos",
+      "Adults": "Adultos",
+      "Youths": "Jóvenes",
+      "Children": "Niños",
+      "Babies": "Bebés"
+    },
+    "Actions": {
+      "PrintReceipt": "Imprimir comprobante",
+      "ExploreMore": "Explorar más actividades",
+      "GoHome": "Ir al inicio"
+    },
+    "Side": {
+      "ActivityFallback": "Actividad",
+      "SummaryTitle": "Resumen de tu compra",
+      "Total": "Total"
+    }
+  },
+  "NotFound": {
+    "CodePill": "Error 404 · Página no encontrada",
+    "Title": "Uy… no pudimos encontrar eso.",
+    "Description": "Puede que el enlace esté roto o que la página haya sido movida. Vuelve al inicio o explora nuestras actividades.",
+    "Buttons": {
+      "Home": "Ir al inicio",
+      "Explore": "Ver actividades",
+      "Back": "Volver atrás"
+    },
+    "HelpPrefix": "¿Crees que esto es un error? Escríbenos a"
+  },
+  "Emails": {
+    "CompanyBooking": {
+      "Preview": "Nueva reserva realizada",
+      "Title": "Nueva reserva realizada",
+      "ReservationNo": "Nº de reserva",
+      "Intro": "Se recibió una nueva reserva. A continuación el detalle resumido para gestión interna.",
+      "ClientTitle": "Cliente",
+      "BookingTitle": "Detalles de la reserva",
+      "Fields": {
+        "Name": "Nombre",
+        "Email": "Correo",
+        "Phone": "Teléfono",
+        "Activity": "Actividad",
+        "Date": "Fecha",
+        "Schedule": "Horario",
+        "Pickup": "Recogida",
+        "PaymentMethod": "Método de pago",
+        "People": "Personas",
+        "Total": "Total"
+      },
+      "Guests": {
+        "Seniors": "Ancianos",
+        "Adults": "Adultos",
+        "Youths": "Jóvenes",
+        "Children": "Niños",
+        "Babies": "Bebés"
+      },
+      "Buttons": {
+        "ViewPDF": "Ver comprobante (PDF)",
+        "OpenInbox": "Abrir en panel"
+      },
+      "Footer": {
+        "AutoNotice": "Notificación automática de nueva reserva en {company}.",
+        "Website": "Sitio web"
+      }
+    },
+    "Emails": {
+      "BookingConfirmation": {
+        "Preview": "Confirmación de reserva",
+        "Title": "Confirmación de reserva",
+        "ReservationNo": "N.º de reserva",
+        "Greeting": "Hola {name},",
+        "Intro1": "¡Gracias por elegirnos! Hemos recibido tu solicitud de reserva.",
+        "Intro2": "A continuación encontrarás el resumen de tu actividad. Presenta este correo o el comprobante PDF el día de la excursión.",
+        "Buttons": {
+          "ViewPDF": "Ver comprobante (PDF)"
+        },
+        "Sections": {
+          "CustomerData": "Datos del cliente",
+          "BookingDetails": "Detalles de la reserva"
+        },
+        "Fields": {
+          "Name": "Nombre",
+          "Email": "Correo",
+          "Phone": "Teléfono",
+          "Activity": "Actividad",
+          "Date": "Fecha",
+          "Schedule": "Horario",
+          "Pickup": "Recogida",
+          "People": "Personas",
+          "Total": "Total"
+        },
+        "Guests": {
+          "Seniors": "Ancianos",
+          "Adults": "Adultos",
+          "Youths": "Jóvenes",
+          "Children": "Niños",
+          "Babies": "Bebés"
+        },
+        "Social": {
+          "FollowUs": "¡Síguenos!",
+          "FacebookAlt": "Facebook",
+          "InstagramAlt": "Instagram",
+          "WhatsAppAlt": "WhatsApp"
+        },
+        "Footer": {
+          "SentTo": "Este mensaje fue enviado a:",
+          "VisitSite": "Visita nuestro sitio:",
+          "ContactLine": "{company} • {email} • {phone}"
+        }
+      }
+    }
   }
 }

@@ -1,17 +1,22 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import React, { useMemo, useState } from "react";
 import Image from "next/image";
+import { useTranslations, useLocale } from "next-intl";
 import { agencyInfo } from "@/config";
+
+// UI
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Separator } from "@/components/ui/separator";
 import { Badge } from "@/components/ui/badge";
-import { Search, Calendar, Clock, MapPin, Users, Mail, Phone, CreditCard, ArrowLeft } from "lucide-react";
-import { PaymentStatus } from "@/generated/prisma";
+import { Search, Calendar, Clock, MapPin, Users, Mail, Phone, CreditCard } from "lucide-react";
 import { ArrowLeftToHome } from "@/components";
+
+// Types (ajusta si tu import real difiere)
+import { PaymentStatus } from "@/generated/prisma";
 
 type Guests = {
   seniors: number;
@@ -44,22 +49,27 @@ const currency = new Intl.NumberFormat("es-DO", { style: "currency", currency: "
 // Normaliza: quita espacios y pone en MAYÚSCULA
 const normalizeNo = (s: string) => s.replace(/\s+/g, "").trim().toUpperCase();
 
-function formatDateES(dateISO?: string) {
+function formatDateByLocale(dateISO?: string, locale?: string) {
   if (!dateISO) return "—";
   const d = new Date(dateISO);
   if (Number.isNaN(d.getTime())) return "—";
-  return d.toLocaleDateString("es-DO", { day: "2-digit", month: "2-digit", year: "numeric" });
+  const loc = locale || "es-DO";
+  const opts: Intl.DateTimeFormatOptions = { day: "2-digit", month: "2-digit", year: "numeric" };
+  return d.toLocaleDateString(loc, opts);
 }
 
-function statusBadge(status: PaymentStatus) {
+function statusBadge(status: PaymentStatus | string, t: (key: string, values?: Record<string, any>) => string) {
   const s = String(status).toUpperCase();
-  if (s === PaymentStatus.PAID) return <Badge className="bg-emerald-600 hover:bg-emerald-700">Pagada</Badge>;
-  if (s === PaymentStatus.PENDING) return <Badge className="bg-amber-500 hover:bg-amber-600">Pendiente</Badge>;
-  if (s === "CANCELLED" || s === "CANCELED") return <Badge variant="destructive">Cancelada</Badge>;
-  return <Badge variant="secondary">{status}</Badge>;
+  if (s === "PAID" || s === PaymentStatus.PAID) return <Badge className="bg-emerald-600 hover:bg-emerald-700">{t("PaymentStatus.PAID")}</Badge>;
+  if (s === "PENDING" || s === PaymentStatus.PENDING) return <Badge className="bg-amber-500 hover:bg-amber-600">{t("PaymentStatus.PENDING")}</Badge>;
+  if (s === "CANCELLED" || s === "CANCELED" || s === (PaymentStatus as any).CANCELLED) return <Badge variant="destructive">{t("PaymentStatus.CANCELLED")}</Badge>;
+  return <Badge variant="secondary">{t("PaymentStatus.UNKNOWN", { status })}</Badge>;
 }
 
 export default function BookingStatusPage() {
+  const locale = useLocale();
+  const t = useTranslations("BookingPage");
+
   const [code, setCode] = useState("");
   const [loading, setLoading] = useState(false);
   const [resp, setResp] = useState<BookingLookupOk | BookingLookupErr | null>(null);
@@ -68,14 +78,14 @@ export default function BookingStatusPage() {
     if (!resp || !("ok" in resp) || !resp.ok) return [];
     const g = resp.data.guests || ({} as Guests);
     const rows = [
-      { label: "Ancianos", value: g.seniors ?? 0 },
-      { label: "Adultos", value: g.adults ?? 0 },
-      { label: "Jóvenes", value: g.youths ?? 0 },
-      { label: "Niños", value: g.children ?? 0 },
-      { label: "Bebés", value: g.babies ?? 0 },
+      { label: t("Guests.Seniors"), value: g.seniors ?? 0 },
+      { label: t("Guests.Adults"), value: g.adults ?? 0 },
+      { label: t("Guests.Youths"), value: g.youths ?? 0 },
+      { label: t("Guests.Children"), value: g.children ?? 0 },
+      { label: t("Guests.Babies"), value: g.babies ?? 0 },
     ].filter((r) => r.value > 0);
     return rows;
-  }, [resp]);
+  }, [resp, t]);
 
   const totalPeople = useMemo(() => {
     if (!resp || !("ok" in resp) || !resp.ok) return 0;
@@ -87,7 +97,7 @@ export default function BookingStatusPage() {
     e.preventDefault();
     const no = normalizeNo(code);
     if (!no) {
-      setResp({ ok: false, message: "Introduce tu número de reserva." });
+      setResp({ ok: false, message: t("ErrorEnterNumber") });
       return;
     }
     setLoading(true);
@@ -97,7 +107,7 @@ export default function BookingStatusPage() {
       const json = (await res.json()) as BookingLookupOk | BookingLookupErr;
       setResp(json);
     } catch {
-      setResp({ ok: false, message: "No se pudo consultar la reserva. Inténtalo nuevamente." });
+      setResp({ ok: false, message: t("ErrorLookupFailed") });
     } finally {
       setLoading(false);
     }
@@ -111,7 +121,7 @@ export default function BookingStatusPage() {
       <div className="mb-6 flex items-center justify-between">
         <div className="flex items-center gap-3">
           <Image src={agencyInfo.logo} alt={agencyInfo.name} width={40} height={40} className="rounded" unoptimized />
-          <h1 className="text-2xl md:text-3xl font-extrabold tracking-tight">Consulta tu reserva</h1>
+          <h1 className="text-2xl md:text-3xl font-extrabold tracking-tight">{t("title")}</h1>
         </div>
 
         <div>
@@ -122,15 +132,15 @@ export default function BookingStatusPage() {
       {/* Buscador */}
       <Card className="mb-6">
         <CardHeader>
-          <CardTitle>Introduce tu número de reserva</CardTitle>
-          <CardDescription>Lo encontrarás en el correo de confirmación (ej: MT-ABC123)</CardDescription>
+          <CardTitle>{t("EnterNumber")}</CardTitle>
+          <CardDescription>{t("YouWillFindItIn")}</CardDescription>
         </CardHeader>
         <CardContent>
           <form onSubmit={onSearch} className="flex flex-col sm:flex-row gap-3">
             <Input
               value={code}
-              onChange={(e) => setCode(normalizeNo(e.target.value))} // <<— fuerza MAYÚSCULA y sin espacios
-              placeholder="Ej: MT-ABC123"
+              onChange={(e) => setCode(normalizeNo(e.target.value))} // fuerza MAYÚSCULA y sin espacios
+              placeholder={t("PlaceholderBookingNo")}
               className="uppercase"
               autoFocus
               required
@@ -138,11 +148,11 @@ export default function BookingStatusPage() {
               autoCapitalize="characters"
               spellCheck={false}
               pattern="[A-Z0-9\-]+"
-              title="Usa solo letras, números y guiones (sin espacios)"
+              title={t("BookingNoInputTitle")}
             />
             <Button type="submit" disabled={loading} className="gap-2">
               <Search className="h-4 w-4" />
-              {loading ? "Buscando..." : "Buscar"}
+              {loading ? t("Searching") : t("Search")}
             </Button>
           </form>
         </CardContent>
@@ -151,7 +161,7 @@ export default function BookingStatusPage() {
       {/* Resultado */}
       {resp && !ok && (
         <Alert className="mb-6">
-          <AlertDescription>{(resp as BookingLookupErr).message || "No encontramos una reserva con ese número."}</AlertDescription>
+          <AlertDescription>{(resp as BookingLookupErr).message || t("ErrorNotFound")}</AlertDescription>
         </Alert>
       )}
 
@@ -163,12 +173,12 @@ export default function BookingStatusPage() {
               <CardHeader>
                 <div className="flex items-start justify-between gap-3">
                   <div>
-                    <CardTitle className="leading-tight">{resp.data.activityName}</CardTitle>
+                    <CardTitle className="leading-tight">{(resp as BookingLookupOk).data.activityName}</CardTitle>
                     <CardDescription>
-                      N.º de reserva: <span className="font-semibold">#{resp.data.no}</span>
+                      {t("BookingNoLabel")} <span className="font-semibold">#{(resp as BookingLookupOk).data.no}</span>
                     </CardDescription>
                   </div>
-                  <div className="shrink-0">{statusBadge(resp.data.paymentStatus as PaymentStatus)}</div>
+                  <div className="shrink-0">{statusBadge((resp as BookingLookupOk).data.paymentStatus as PaymentStatus, t)}</div>
                 </div>
               </CardHeader>
 
@@ -177,18 +187,18 @@ export default function BookingStatusPage() {
                 <div className="rounded-lg bg-muted/40 p-3 text-sm">
                   <div className="flex items-center gap-2">
                     <Calendar className="h-4 w-4" />
-                    <span className="font-medium">Fecha:</span>
-                    <span className="ml-auto">{formatDateES(resp.data.dateISO)}</span>
+                    <span className="font-medium">{t("DateLabel")}</span>
+                    <span className="ml-auto">{formatDateByLocale((resp as BookingLookupOk).data.dateISO, locale)}</span>
                   </div>
                   <div className="flex items-center gap-2 mt-2">
                     <Clock className="h-4 w-4" />
-                    <span className="font-medium">Horario:</span>
-                    <span className="ml-auto">{resp.data.schedule || "—"}</span>
+                    <span className="font-medium">{t("ScheduleLabel")}</span>
+                    <span className="ml-auto">{(resp as BookingLookupOk).data.schedule || t("NotAvailable")}</span>
                   </div>
                   <div className="flex items-center gap-2 mt-2">
                     <MapPin className="h-4 w-4" />
-                    <span className="font-medium">Recogida:</span>
-                    <span className="ml-auto text-right">{resp.data.pickupLocation || "—"}</span>
+                    <span className="font-medium">{t("PickupLabel")}</span>
+                    <span className="ml-auto text-right">{(resp as BookingLookupOk).data.pickupLocation || t("NotAvailable")}</span>
                   </div>
                 </div>
 
@@ -196,20 +206,20 @@ export default function BookingStatusPage() {
                 <div className="rounded-lg bg-muted/40 p-3 text-sm">
                   <div className="flex items-center gap-2">
                     <Users className="h-4 w-4" />
-                    <span className="font-medium">Cliente</span>
+                    <span className="font-medium">{t("CustomerLabel")}</span>
                   </div>
                   <div className="mt-2 grid sm:grid-cols-3 gap-2 text-sm">
                     <div className="flex items-center gap-2">
                       <Users className="h-4 w-4 text-muted-foreground" />
-                      <span>{resp.data.customer.name || "—"}</span>
+                      <span>{(resp as BookingLookupOk).data.customer.name || t("NotAvailable")}</span>
                     </div>
                     <div className="flex items-center gap-2">
                       <Mail className="h-4 w-4 text-muted-foreground" />
-                      <span className="truncate">{resp.data.customer.email || "—"}</span>
+                      <span className="truncate">{(resp as BookingLookupOk).data.customer.email || t("NotAvailable")}</span>
                     </div>
                     <div className="flex items-center gap-2">
                       <Phone className="h-4 w-4 text-muted-foreground" />
-                      <span>{resp.data.customer.phone || "—"}</span>
+                      <span>{(resp as BookingLookupOk).data.customer.phone || t("NotAvailable")}</span>
                     </div>
                   </div>
                 </div>
@@ -217,7 +227,7 @@ export default function BookingStatusPage() {
                 {/* Personas */}
                 <div className="text-sm">
                   <div className="flex items-center">
-                    <span className="text-muted-foreground">Personas</span>
+                    <span className="text-muted-foreground">{t("PeopleLabel")}</span>
                     <span className="ml-auto font-medium">{totalPeople}</span>
                   </div>
                   {personRows.length > 0 && (
@@ -235,12 +245,12 @@ export default function BookingStatusPage() {
                 <div className="flex items-center justify-between text-sm">
                   <div className="flex items-center gap-2 text-muted-foreground">
                     <CreditCard className="h-4 w-4" />
-                    <span>Método:</span>
-                    <span className="font-medium text-foreground">{resp.data.paymentMethod || "—"}</span>
+                    <span>{t("MethodLabel")}</span>
+                    <span className="font-medium text-foreground">{(resp as BookingLookupOk).data.paymentMethod || t("NotAvailable")}</span>
                   </div>
                   <div className="text-right">
-                    <p className="text-xs text-muted-foreground">Total</p>
-                    <p className="text-xl font-extrabold">{currency.format(resp.data.totalPrice || 0)}</p>
+                    <p className="text-xs text-muted-foreground">{t("TotalLabel")}</p>
+                    <p className="text-xl font-extrabold">{currency.format((resp as BookingLookupOk).data.totalPrice || 0)}</p>
                   </div>
                 </div>
               </CardContent>
@@ -251,17 +261,17 @@ export default function BookingStatusPage() {
           <div className="lg:col-span-1">
             <Card className="lg:sticky lg:top-6">
               <CardHeader>
-                <CardTitle>¿Necesitas ayuda?</CardTitle>
-                <CardDescription>Estamos aquí para ti.</CardDescription>
+                <CardTitle>{t("Help.NeedHelpTitle")}</CardTitle>
+                <CardDescription>{t("Help.NeedHelpSubtitle")}</CardDescription>
               </CardHeader>
               <CardContent className="space-y-3">
                 <Button asChild className="w-full">
                   <a href={`https://wa.me/${agencyInfo.contact.phone.replace(/\D/g, "")}?text=Hola,%20tengo%20dudas%20sobre%20mi%20reserva%20#${ok ? (resp as BookingLookupOk).data.no : ""}`} target="_blank" rel="noopener noreferrer">
-                    WhatsApp
+                    {t("Help.ContactWhatsApp")}
                   </a>
                 </Button>
                 <Button asChild variant="secondary" className="w-full">
-                  <a href={`mailto:${agencyInfo.contact.email}?subject=Consulta%20reserva%20${ok ? (resp as BookingLookupOk).data.no : ""}`}>Escríbenos por email</a>
+                  <a href={`mailto:${agencyInfo.contact.email}?subject=Consulta%20reserva%20${ok ? (resp as BookingLookupOk).data.no : ""}`}>{t("Help.ContactEmail")}</a>
                 </Button>
               </CardContent>
             </Card>

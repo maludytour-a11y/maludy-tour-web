@@ -5,8 +5,11 @@ import Image from "next/image";
 import { agencyInfo } from "@/config";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, Home, Compass } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 export default function NotFound() {
+  const t = useTranslations("NotFound");
+
   return (
     <main className="relative min-h-dvh bg-background">
       {/* Decor */}
@@ -26,27 +29,27 @@ export default function NotFound() {
         {/* Código */}
         <p className="mb-3 inline-flex items-center gap-2 rounded-full border bg-card px-3 py-1 text-xs font-medium text-muted-foreground">
           <span className="inline-flex h-2 w-2 rounded-full bg-amber-500" />
-          Error 404 · Página no encontrada
+          {t("CodePill")}
         </p>
 
         {/* Título */}
-        <h1 className="bg-gradient-to-b from-foreground py-2 to-foreground/60 bg-clip-text text-4xl font-extrabold tracking-tight text-transparent sm:text-5xl">Uy… no pudimos encontrar eso.</h1>
+        <h1 className="bg-gradient-to-b from-foreground py-2 to-foreground/60 bg-clip-text text-4xl font-extrabold tracking-tight text-transparent sm:text-5xl">{t("Title")}</h1>
 
         {/* Texto */}
-        <p className="mt-3 max-w-xl text-balance text-sm text-muted-foreground sm:text-base">Puede que el enlace esté roto o que la página haya sido movida. Vuelve al inicio o explora nuestras actividades.</p>
+        <p className="mt-3 max-w-xl text-balance text-sm text-muted-foreground sm:text-base">{t("Description")}</p>
 
         {/* Acciones */}
         <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
           <Button asChild variant="secondary" className="gap-2">
             <Link href="/">
               <Home className="h-4 w-4" />
-              Ir al inicio
+              {t("Buttons.Home")}
             </Link>
           </Button>
           <Button asChild className="gap-2">
             <Link href="/activities">
               <Compass className="h-4 w-4" />
-              Ver actividades
+              {t("Buttons.Explore")}
             </Link>
           </Button>
           <Button asChild variant="ghost" className="gap-2">
@@ -58,14 +61,14 @@ export default function NotFound() {
               }}
             >
               <ArrowLeft className="h-4 w-4" />
-              Volver atrás
+              {t("Buttons.Back")}
             </Link>
           </Button>
         </div>
 
         {/* Mini ayuda */}
         <p className="mt-6 text-xs text-muted-foreground">
-          ¿Crees que esto es un error? Escríbenos a{" "}
+          {t("HelpPrefix")}{" "}
           <a className="underline underline-offset-4" href={`mailto:${agencyInfo.contact.email}`}>
             {agencyInfo.contact.email}
           </a>

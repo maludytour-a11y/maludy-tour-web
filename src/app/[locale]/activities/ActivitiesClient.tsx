@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Search, X } from "lucide-react";
 import { ActivityCard, Activity } from "@/components/ActivityCard";
 import { NavBar } from "@/components";
+import { useTranslations } from "next-intl";
 
 // Carga MagicMotion solo en el cliente (y evitamos warning de React 19 con wrapper)
 const MagicMotion = dynamic(() => import("react-magic-motion").then((m) => m.MagicMotion), { ssr: false });
@@ -25,6 +26,7 @@ function norm(s: string) {
 
 export default function ActivitiesClient({ initialItems }: { initialItems: Activity[] }) {
   const [q, setQ] = useState("");
+  const act = useTranslations("ActivitiesPage");
 
   const filtered = useMemo(() => {
     const nq = norm(q);
@@ -42,7 +44,7 @@ export default function ActivitiesClient({ initialItems }: { initialItems: Activ
         <form onSubmit={(e) => e.preventDefault()} role="search" aria-label="Buscar actividades" className="w-full max-w-md">
           <div className="relative">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-            <Input value={q} onChange={(e) => setQ(e.target.value)} placeholder="Busca por nombre (ej: Saona, Buggy...)" className="pl-9 pr-10" autoFocus />
+            <Input value={q} onChange={(e) => setQ(e.target.value)} placeholder={act("SearchPlaceholder")} className="pl-9 pr-10" autoFocus />
             {!!q && (
               <button type="button" onClick={() => setQ("")} className="absolute right-2 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground" aria-label="Limpiar búsqueda" title="Limpiar">
                 <X className="h-4 w-4" />
@@ -53,9 +55,9 @@ export default function ActivitiesClient({ initialItems }: { initialItems: Activ
 
         {/* Título + resultados (debajo del buscador, pequeño) */}
         <div className="mt-3 text-center">
-          <p className="text-base md:text-lg font-semibold leading-tight">Actividades</p>
+          <p className="text-base md:text-lg font-semibold leading-tight">{act("Activities")}</p>
           <p className="text-xs text-muted-foreground">
-            {filtered.length} {filtered.length === 1 ? "resultado" : "resultados"}
+            {filtered.length} {filtered.length === 1 ? act("Result") : act("Results")}
           </p>
         </div>
       </div>
@@ -63,7 +65,9 @@ export default function ActivitiesClient({ initialItems }: { initialItems: Activ
       {/* Grid */}
       <MaybeMagic>
         {filtered.length === 0 ? (
-          <div className="rounded-xl border p-10 text-center text-muted-foreground">No encontramos actividades {q ? `para “${q}”` : ""}.</div>
+          <div className="rounded-xl border p-10 text-center text-muted-foreground">
+            {act("NotFoundActivities")} {q ? `${act("For")} “${q}”` : ""}.
+          </div>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {filtered.map((a) => (

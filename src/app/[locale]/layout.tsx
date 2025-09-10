@@ -39,7 +39,7 @@ export default async function LocaleLayout({ children, params }: Props) {
 
   return (
     <html>
-      <body lang={locale} className={`${montserrat.variable} ${ubuntu.variable} antialiased`}>
+      <body lang={locale} className={`${montserrat.variable} ${ubuntu.variable} antialiased`} suppressHydrationWarning>
         <NextIntlClientProvider messages={messages}>
           <ReduxProviders>{children}</ReduxProviders>
         </NextIntlClientProvider>

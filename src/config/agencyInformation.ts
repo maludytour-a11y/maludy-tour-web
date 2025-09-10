@@ -82,7 +82,7 @@ export const agencyInfo: IAgencyInfo = {
   },
   providers: {
     resend: {
-      domain: "<booking@confirm.maludytour.com>",
+      domain: "<booking@maludytour.com>",
       apikkey: process.env.RESEND_API_KEY?.toString() || "",
     },
   },

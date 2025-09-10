@@ -73,5 +73,447 @@
       "Cookies": "Cookies",
       "Terms": "Terms"
     }
+  },
+  "ActivitiesPage": {
+    "SearchPlaceholder": "Search by name (e.g., Saona, Buggy...)",
+    "Activities": "Activities",
+    "Results": "results",
+    "Result": "result",
+    "NotFoundActivities": "We didn't find any activities",
+    "For": "for"
+  },
+  "BookingPage": {
+    "title": "Check your booking",
+    "home": "Home",
+    "EnterNumber": "Enter your booking number",
+    "YouWillFindItIn": "You'll find it in the confirmation email (e.g., MT-ABC123)",
+    "PlaceholderBookingNo": "e.g., MT-ABC123",
+    "BookingNoInputTitle": "Use only letters, numbers and hyphens (no spaces)",
+    "Search": "Search",
+    "Searching": "Searching…",
+
+    "ErrorEnterNumber": "Enter your booking number.",
+    "ErrorLookupFailed": "We couldn't fetch your booking. Please try again.",
+    "ErrorNotFound": "We didn’t find a booking with that number.",
+
+    "BookingNoLabel": "Booking No.:",
+    "DateLabel": "Date:",
+    "ScheduleLabel": "Schedule:",
+    "PickupLabel": "Pickup:",
+    "CustomerLabel": "Customer",
+    "PeopleLabel": "People",
+    "MethodLabel": "Method:",
+    "TotalLabel": "Total",
+    "NotAvailable": "—",
+
+    "Guests": {
+      "Seniors": "Seniors",
+      "Adults": "Adults",
+      "Youths": "Youths",
+      "Children": "Children",
+      "Babies": "Babies"
+    },
+
+    "PaymentStatus": {
+      "PAID": "Paid",
+      "PENDING": "Pending",
+      "CANCELLED": "Cancelled",
+      "UNKNOWN": "{status}"
+    },
+
+    "Help": {
+      "NeedHelpTitle": "Need help?",
+      "NeedHelpSubtitle": "We’re here for you.",
+      "ContactWhatsApp": "WhatsApp",
+      "ContactEmail": "Write us by email"
+    }
+  },
+  "AboutPage": {
+    "Meta": {
+      "Title": "About {agencyName} — Who we are",
+      "OGTitle": "About {agencyName}",
+      "Description": "Meet {agencyName}: a local team passionate about crafting authentic experiences in Punta Cana, with close support, bilingual guides and reliable service.",
+      "OGDescription": "Meet {agencyName}: a local team passionate about authentic experiences in Punta Cana."
+    },
+    "WhoWeAreTitle": "Who we are",
+    "SloganText": "Local essence tourism: proximity, safety and quality.",
+    "Text1": "We believe a good tour is much more than visiting places. It’s about experiencing the destination calmly, with guides who know every detail and a team that supports you from start to finish.",
+    "Text2": "We work with small groups and trusted providers to ensure a comfortable, safe and memorable experience. Our goal is for you to enjoy worry-free: clear logistics, constant communication and personalized attention.",
+    "Text3": "Whether you travel with family, friends or as a couple, we help you find the ideal activity, tailored to your time and interests.",
+    "ApproachTitle": "Our approach",
+    "ApproachSubtitle": "What guides every experience",
+    "Features": {
+      "TrustSafety": "Trust & safety",
+      "ComfortableGroups": "Comfortable groups",
+      "PunctualClarity": "Punctuality & clarity",
+      "LocalExpertise": "Local expertise",
+      "VerifiedQuality": "Verified quality",
+      "PersonalizedService": "Personalized attention"
+    },
+    "WhyChooseUsTitle": "Why choose us?",
+    "WhyChooseUsSubtitle": "Clear, you-first benefits",
+    "Reasons": {
+      "CloseSupportTitle": "Close support",
+      "CloseSupportDesc": "Guidance before, during and after the tour.",
+      "BilingualGuidesTitle": "Bilingual guides",
+      "BilingualGuidesDesc": "Smooth communication in Spanish and English.",
+      "ReliableSchedulesTitle": "Reliable schedules",
+      "ReliableSchedulesDesc": "Clear itineraries and on-time coordination.",
+      "CuratedRoutesTitle": "Curated routes",
+      "CuratedRoutesDesc": "We select experiences with the best value for money.",
+      "SecureBookingsTitle": "Secure bookings",
+      "SecureBookingsDesc": "Email confirmations and PDF voucher.",
+      "TotalTransparencyTitle": "Total transparency",
+      "TotalTransparencyDesc": "What you see is what you get. No surprises."
+    },
+    "CoverageTitle": "Coverage",
+    "CoverageSubtitle": "We operate in Punta Cana and nearby areas",
+    "LocatedAtPrefix": "We are located in",
+    "CoverageText": "We coordinate pick-ups at hotels and meeting points, and work with local operators who meet high standards of quality and safety.",
+    "ViewOnGoogleMaps": "View on Google Maps",
+    "QuickContactTitle": "Quick contact",
+    "QuickContactSubtitle": "We’re ready to help",
+    "PhoneLabel": "Phone",
+    "EmailLabel": "Email",
+    "WebsiteLabel": "Website"
+  },
+  "ActivityDetailPage": {
+    "Meta": {
+      "FallbackTitle": "Activity | {agencyName}",
+      "FallbackDescription": "Discover unforgettable activities at {agencyName}",
+      "NotFoundTitle": "Activity not found | {agencyName}",
+      "NotFoundDescription": "The activity you’re looking for is not available."
+    },
+    "Highlights": {
+      "FreeCancellation": "Free cancellation",
+      "BookNowPayLater": "Book now, pay later",
+      "GuideLanguages": "Guide: Spanish / English"
+    },
+    "Header": {
+      "Reviews": "{count, plural, one {# review} other {# reviews}}",
+      "ProviderLabel": "Provider"
+    },
+    "Gallery": {
+      "AriaMain": "Image gallery: {title}",
+      "Prev": "Previous",
+      "Next": "Next",
+      "Fullscreen": "View full screen",
+      "Close": "Close",
+      "ThumbAria": "View image {index}",
+      "ThumbAlt": "{title} thumbnail {index}",
+      "MainAlt": "{title} ({current}/{total})",
+      "MainAltExpanded": "{title} (enlarged {current}/{total})",
+      "LightboxAria": "Full-screen image viewer",
+      "Counter": "{current} / {total}",
+      "NoImages": "No images available",
+      "PlaceholderAlt": "Image placeholder"
+    },
+    "GeneralInformation": {
+      "Title": "General information",
+      "AriaList": "General information list"
+    },
+    "WhatYouDo": {
+      "Title": "What you'll do",
+      "AriaList": "Itinerary activities list",
+      "Empty": "No information available"
+    },
+    "Detail": {
+      "Title": "Details",
+      "Aria": "Detailed description of the activity",
+      "Empty": "No information available"
+    },
+    "WhatsIncluded": {
+      "IncludesTitle": "What’s included",
+      "NotSuitableTitle": "Not suitable for",
+      "IncludesAria": "List of included items",
+      "NotSuitableAria": "List of not-suitable profiles",
+      "EmptyIncludes": "No information available about what’s included.",
+      "EmptyNotSuitable": "No information available about restrictions."
+    },
+    "Reviews": {
+      "Title": "Featured reviews",
+      "Empty": "No reviews yet.",
+      "AriaList": "Featured reviews list",
+      "ReviewerMeta": "{name} · {date}"
+    }
+  },
+  "BookingForm": {
+    "Badge": {
+      "MaySellOut": "May sell out",
+      "AvailabilityNote": "Availability may vary by date and group size."
+    },
+    "PriceHeader": {
+      "FromLabel": "From",
+      "PerPersonNote": "per person (by category)"
+    },
+    "Summary": {
+      "None": "Select people",
+      "SelectQty": "Select the number of people"
+    },
+    "GuestsOverlay": {
+      "SelectByAgeRanges": "Select by age ranges",
+      "AgeRangeUnknown": "—",
+      "PerEach": "{price} each",
+      "Free": "Free",
+      "NeedsAdult": "You need at least 1 {adult} or {senior} to add minors or babies.",
+      "Total": "Total: {count} {count, plural, one {person} other {people}}",
+      "Done": "Done"
+    },
+    "Fields": {
+      "Name": {
+        "Label": "Name",
+        "Placeholder": "John Doe",
+        "Required": "Your name is required",
+        "Min": "Minimum 2 characters"
+      },
+      "Email": {
+        "Label": "Email",
+        "Placeholder": "example@mail.com",
+        "Required": "Email is required",
+        "Invalid": "Invalid email"
+      },
+      "Phone": {
+        "Label": "Phone",
+        "Placeholder": "+1 (809) 555-1234",
+        "Required": "Phone is required",
+        "Min": "Phone number is too short"
+      },
+      "Pickup": {
+        "Label": "Pickup location",
+        "Placeholder": "Barceló Hotel, main lobby",
+        "Required": "Please enter your pickup location"
+      },
+      "Date": {
+        "Label": "Date",
+        "Placeholder": "Select date",
+        "Required": "Select a date"
+      },
+      "Schedule": {
+        "Label": "Schedule",
+        "Placeholder": "Select a schedule",
+        "Empty": "No schedules available",
+        "Required": "Select a schedule"
+      },
+      "People": {
+        "Label": "People",
+        "PayingRequired": "Select at least 1 paying person."
+      },
+      "Language": {
+        "Label": "Language",
+        "Placeholder": "Select language",
+        "Required": "Select a language",
+        "Options": {
+          "ES": "Spanish",
+          "EN": "English"
+        }
+      }
+    },
+    "GuestsLabels": {
+      "Seniors": "Seniors",
+      "Adults": "Adults",
+      "Youths": "Youths",
+      "Children": "Children",
+      "Babies": "Babies"
+    },
+    "Validation": {
+      "MinZero": "Cannot be negative",
+      "Max99": "Max. 99"
+    },
+    "Buttons": {
+      "PayNow": "Pay now",
+      "PayNowWithTotal": "Pay now · {total}"
+    }
+  },
+  "Checkout": {
+    "Header": {
+      "Title": "Complete your booking",
+      "Back": "Back"
+    },
+    "Alerts": {
+      "MissingCore": "Missing information to complete the payment. Go back to the activity and complete date, time and number of people.",
+      "ZodIssuesPrefix": "Check the fields:",
+      "CreateBookingError": "Error creating the booking.",
+      "ServerValidationErrors": "Validation errors on the server.",
+      "Unexpected": "An unexpected error occurred while processing the booking."
+    },
+    "SummaryCard": {
+      "ActivityFallback": "Activity",
+      "Description": "Review the details before paying.",
+      "Rows": {
+        "Name": "Name",
+        "Email": "Email",
+        "Phone": "Phone",
+        "Date": "Date",
+        "Schedule": "Schedule",
+        "Pickup": "Pickup",
+        "People": "People",
+        "Total": "Total"
+      },
+      "Conditions": "By continuing you accept our terms of service and cancellation policy."
+    },
+    "GuestsLabels": {
+      "Seniors": "Seniors",
+      "Adults": "Adults",
+      "Youths": "Youths",
+      "Children": "Children",
+      "Babies": "Babies"
+    },
+    "PaymentCard": {
+      "Title": "Payment method",
+      "Description": "Choose how you want to pay for your experience.",
+      "PaypalTitle": "PayPal / Card",
+      "PaypalBadge": "Coming soon",
+      "PaypalDesc": "Pay with PayPal or card (no account required). Not available yet.",
+      "CashTitle": "Cash payment",
+      "CashDesc": "You’ll pay in cash at pickup or at the start of the activity.",
+      "Trust": {
+        "SecurePayment": "Secure payment",
+        "PurchaseProtection": "Purchase protection",
+        "PersonalAttention": "Personalized attention"
+      }
+    },
+    "Buttons": {
+      "ContinueWithPayPal": "Continue with PayPal",
+      "ConfirmCash": "Confirm booking (cash)"
+    },
+    "BottomBar": {
+      "Total": "Total"
+    }
+  },
+  "Success": {
+    "Header": {
+      "Title": "Booking confirmed!",
+      "Home": "Home"
+    },
+    "Alert": {
+      "Missing": "We couldn't find all your booking details. If you already completed payment, please return to the activity or contact us."
+    },
+    "Card": {
+      "Title": "Thank you! Your booking has been completed successfully",
+      "DescriptionWithEmail": "We sent a confirmation email to {email}. Show this receipt on the day of your activity.",
+      "DescriptionNoEmail": "We sent a confirmation email. Show this receipt on the day of your activity.",
+      "Reference": "Reference",
+      "TotalPaid": "Total paid"
+    },
+    "Info": {
+      "Name": "Name",
+      "Email": "Email",
+      "Phone": "Phone",
+      "Date": "Date",
+      "Schedule": "Schedule",
+      "Pickup": "Pickup"
+    },
+    "People": {
+      "Title": "People"
+    },
+    "GuestsLabels": {
+      "Seniors": "Seniors",
+      "Adults": "Adults",
+      "Youths": "Youths",
+      "Children": "Children",
+      "Babies": "Babies"
+    },
+    "Actions": {
+      "PrintReceipt": "Print receipt",
+      "ExploreMore": "Explore more activities",
+      "GoHome": "Go to home"
+    },
+    "Side": {
+      "ActivityFallback": "Activity",
+      "SummaryTitle": "Your purchase summary",
+      "Total": "Total"
+    }
+  },
+  "NotFound": {
+    "CodePill": "Error 404 · Page not found",
+    "Title": "Oops… we couldn’t find that.",
+    "Description": "The link may be broken or the page may have been moved. Go back home or explore our activities.",
+    "Buttons": {
+      "Home": "Go to home",
+      "Explore": "See activities",
+      "Back": "Go back"
+    },
+    "HelpPrefix": "Think this is a mistake? Email us at"
+  },
+  "Emails": {
+    "CompanyBooking": {
+      "Preview": "New booking created",
+      "Title": "New booking created",
+      "ReservationNo": "Reservation No.",
+      "Intro": "A new booking has been received. Below is a brief summary for internal handling.",
+      "ClientTitle": "Customer",
+      "BookingTitle": "Booking details",
+      "Fields": {
+        "Name": "Name",
+        "Email": "Email",
+        "Phone": "Phone",
+        "Activity": "Activity",
+        "Date": "Date",
+        "Schedule": "Schedule",
+        "Pickup": "Pickup",
+        "PaymentMethod": "Payment method",
+        "People": "People",
+        "Total": "Total"
+      },
+      "Guests": {
+        "Seniors": "Seniors",
+        "Adults": "Adults",
+        "Youths": "Youths",
+        "Children": "Children",
+        "Babies": "Babies"
+      },
+      "Buttons": {
+        "ViewPDF": "View receipt (PDF)",
+        "OpenInbox": "Open in dashboard"
+      },
+      "Footer": {
+        "AutoNotice": "Automatic new booking notification at {company}.",
+        "Website": "Website"
+      }
+    },
+    "BookingConfirmation": {
+      "Preview": "Booking confirmation",
+      "Title": "Booking confirmation",
+      "ReservationNo": "Reservation No.",
+      "Greeting": "Hi {name},",
+      "Intro1": "Thanks for choosing us! We have received your booking request.",
+      "Intro2": "Below you’ll find your activity summary. Show this email or the PDF receipt on the day of the tour.",
+      "Buttons": {
+        "ViewPDF": "View receipt (PDF)"
+      },
+      "Sections": {
+        "CustomerData": "Customer details",
+        "BookingDetails": "Booking details"
+      },
+      "Fields": {
+        "Name": "Name",
+        "Email": "Email",
+        "Phone": "Phone",
+        "Activity": "Activity",
+        "Date": "Date",
+        "Schedule": "Schedule",
+        "Pickup": "Pickup",
+        "People": "People",
+        "Total": "Total"
+      },
+      "Guests": {
+        "Seniors": "Seniors",
+        "Adults": "Adults",
+        "Youths": "Youths",
+        "Children": "Children",
+        "Babies": "Babies"
+      },
+      "Social": {
+        "FollowUs": "Follow us!",
+        "FacebookAlt": "Facebook",
+        "InstagramAlt": "Instagram",
+        "WhatsAppAlt": "WhatsApp"
+      },
+      "Footer": {
+        "SentTo": "This message was sent to:",
+        "VisitSite": "Visit our website:",
+        "ContactLine": "{company} • {email} • {phone}"
+      }
+    }
   }
 }
