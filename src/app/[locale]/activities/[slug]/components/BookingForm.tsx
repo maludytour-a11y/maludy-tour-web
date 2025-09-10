@@ -3,7 +3,7 @@
 import { useMemo, useState } from "react";
 import { Controller, useForm, useWatch } from "react-hook-form";
 import { format } from "date-fns";
-import { es } from "date-fns/locale";
+import { es as esDF, enUS as enUSDF } from "date-fns/locale";
 import { Users, Calendar as CalendarIcon, MapPin, Mail, Phone, Info, User, Minus, Plus } from "lucide-react";
 
 // shadcn/ui
@@ -19,6 +19,8 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/comp
 import { useAppDispatch, useAppSelector } from "@/context/redux/hooks";
 import { setBooking, setCustomer } from "@/context/redux/features/bookingSlice";
 import { useRouter } from "next/navigation";
+
+import { useLocale, useTranslations } from "next-intl";
 
 /* ---------------- Tipos ---------------- */
 
@@ -36,7 +38,7 @@ type FormValues = {
   phone: string;
   pickup: string;
   date: Date | null;
-  schedule: string; // 👈 nuevo campo controlado por Select
+  schedule: string;
   language: "ES" | "EN";
   notes?: string;
   guests: Guests;
@@ -64,8 +66,6 @@ interface BookingFormProps {
 
 /* ---------------- Utils ---------------- */
 
-const currency = new Intl.NumberFormat("es-DO", { style: "currency", currency: "USD" });
-
 function formatAgeRange(range?: number[]) {
   if (!range || range.length === 0) return "";
   const min = Math.min(...range);
@@ -82,14 +82,14 @@ function minPositive(...nums: number[]) {
 }
 
 // Componente contador reutilizable
-function Counter({ value, onChange, disabled }: { value: number; onChange: (n: number) => void; disabled?: boolean }) {
+function Counter({ value, onChange, disabled, minError, maxError }: { value: number; onChange: (n: number) => void; disabled?: boolean; minError?: string; maxError?: string }) {
   return (
     <div className="flex items-center gap-2">
-      <Button type="button" size="icon" variant="outline" onClick={() => onChange(Math.max(0, (value ?? 0) - 1))} disabled={disabled || (value ?? 0) <= 0}>
+      <Button type="button" size="icon" variant="outline" onClick={() => onChange(Math.max(0, (value ?? 0) - 1))} disabled={disabled || (value ?? 0) <= 0} aria-label={minError}>
         <Minus className="h-4 w-4" />
       </Button>
       <Input type="number" inputMode="numeric" className="w-16 text-center" value={String(value ?? 0)} onChange={(e) => onChange(Math.max(0, Number(e.target.value || 0)))} disabled={disabled} />
-      <Button type="button" size="icon" variant="outline" onClick={() => onChange(Math.min(99, (value ?? 0) + 1))} disabled={disabled}>
+      <Button type="button" size="icon" variant="outline" onClick={() => onChange(Math.min(99, (value ?? 0) + 1))} disabled={disabled} aria-label={maxError}>
         <Plus className="h-4 w-4" />
       </Button>
     </div>
@@ -103,20 +103,49 @@ export function BookingForm({ id, prices, schedules, activityName }: BookingForm
   const bookingData = useAppSelector((state) => state.bookingReducer.booking);
   const route = useRouter();
 
-  // Tabla de categorías desde props
+  const locale = useLocale();
+  const t = useTranslations("BookingForm");
+  const currency = useMemo(
+    () =>
+      new Intl.NumberFormat(locale || "es-DO", {
+        style: "currency",
+        currency: "USD",
+      }),
+    [locale]
+  );
+  const dfLocale = locale?.startsWith("en") ? enUSDF : esDF;
+
+  // Tabla de categorías desde props (sin labels; los labels vienen de i18n)
   const categories = useMemo(
     () =>
       [
-        { key: "seniors", label: "Ancianos", price: Number(prices?.seniorPrice ?? 0), ages: prices?.seniorAge ?? [], requiresAdult: false },
-        { key: "adults", label: "Adultos", price: Number(prices?.adultPrice ?? 0), ages: prices?.adultAge ?? [], requiresAdult: false },
-        { key: "youths", label: "Jóvenes", price: Number(prices?.youthsPrice ?? 0), ages: prices?.youthsAge ?? [], requiresAdult: true },
-        { key: "children", label: "Niños", price: Number(prices?.childrenPrice ?? 0), ages: prices?.childrenAge ?? [], requiresAdult: true },
-        { key: "babies", label: "Bebés", price: Number(prices?.babiesPrice ?? 0), ages: prices?.babiesAge ?? [], requiresAdult: true },
+        { key: "seniors", price: Number(prices?.seniorPrice ?? 0), ages: prices?.seniorAge ?? [], requiresAdult: false },
+        { key: "adults", price: Number(prices?.adultPrice ?? 0), ages: prices?.adultAge ?? [], requiresAdult: false },
+        { key: "youths", price: Number(prices?.youthsPrice ?? 0), ages: prices?.youthsAge ?? [], requiresAdult: true },
+        { key: "children", price: Number(prices?.childrenPrice ?? 0), ages: prices?.childrenAge ?? [], requiresAdult: true },
+        { key: "babies", price: Number(prices?.babiesPrice ?? 0), ages: prices?.babiesAge ?? [], requiresAdult: true },
       ] as const,
     [prices]
   );
 
-  const fromPrice = useMemo(() => minPositive(categories[0].price, categories[1].price, categories[2].price, categories[3].price, categories[4].price), [categories]);
+  const labelFor = (key: keyof Guests) => {
+    switch (key) {
+      case "seniors":
+        return t("GuestsLabels.Seniors");
+      case "adults":
+        return t("GuestsLabels.Adults");
+      case "youths":
+        return t("GuestsLabels.Youths");
+      case "children":
+        return t("GuestsLabels.Children");
+      case "babies":
+        return t("GuestsLabels.Babies");
+      default:
+        return key;
+    }
+  };
+
+  const fromPrice = useMemo(() => minPositive(...categories.map((c) => c.price)), [categories]);
 
   // UI state
   const [openGuests, setOpenGuests] = useState(false);
@@ -137,7 +166,7 @@ export function BookingForm({ id, prices, schedules, activityName }: BookingForm
       phone: "",
       pickup: "",
       date: null,
-      schedule: "", // 👈 sin valor inicial, forzamos selección
+      schedule: "",
       language: "ES",
       notes: "",
       guests: { seniors: 0, adults: 2, youths: 0, children: 0, babies: 0 },
@@ -153,12 +182,12 @@ export function BookingForm({ id, prices, schedules, activityName }: BookingForm
 
   const summaryText = useMemo(() => {
     const parts: string[] = [];
-    (categories as readonly { key: keyof Guests; label: string }[]).forEach(({ key, label }) => {
+    (categories as readonly { key: keyof Guests }[]).forEach(({ key }) => {
       const qty = guests?.[key] ?? 0;
-      if (qty > 0) parts.push(`${qty} ${label.toLowerCase()}`);
+      if (qty > 0) parts.push(`${qty} ${labelFor(key)}`);
     });
-    return parts.length ? parts.join(", ") : "Selecciona personas";
-  }, [guests, categories]);
+    return parts.length ? parts.join(", ") : t("Summary.None");
+  }, [guests, categories, t]);
 
   const onSubmit = async (data: FormValues) => {
     const { adults, seniors, children, babies, youths } = data.guests;
@@ -172,7 +201,7 @@ export function BookingForm({ id, prices, schedules, activityName }: BookingForm
       },
       booking: {
         no: "pendding",
-        date: isoDate, // serializable
+        date: isoDate,
         activityId: id,
         activityName,
         seniors,
@@ -198,15 +227,15 @@ export function BookingForm({ id, prices, schedules, activityName }: BookingForm
       setBooking({
         activityId: id,
         activityName: activityName,
-        date: isoDate, // <-- string
+        date: isoDate,
         seniors: data.guests.seniors,
         adults: data.guests.adults,
         youths: data.guests.youths,
         children: data.guests.children,
         babies: data.guests.babies,
-        totalPrice, // tu cálculo
+        totalPrice,
         pickupLocation: data.pickup,
-        schedule: data.schedule, // del Select
+        schedule: data.schedule,
       })
     );
 
@@ -219,7 +248,7 @@ export function BookingForm({ id, prices, schedules, activityName }: BookingForm
     <div className="w-[340px]">
       <div className="flex items-center gap-2 text-sm text-muted-foreground mb-2">
         <Users className="h-4 w-4" />
-        <span>Selecciona por rangos de edad</span>
+        <span>{t("GuestsOverlay.SelectByAgeRanges")}</span>
         <TooltipProvider>
           <Tooltip>
             <TooltipTrigger asChild>
@@ -229,7 +258,7 @@ export function BookingForm({ id, prices, schedules, activityName }: BookingForm
               <div className="text-sm space-y-1">
                 {categories.map((c) => (
                   <div key={c.key}>
-                    <strong>{c.label}:</strong> {formatAgeRange(c.ages) || "—"}
+                    <strong>{labelFor(c.key)}:</strong> {formatAgeRange(c.ages) || t("GuestsOverlay.AgeRangeUnknown")}
                   </div>
                 ))}
               </div>
@@ -247,11 +276,19 @@ export function BookingForm({ id, prices, schedules, activityName }: BookingForm
             <div key={row.key} className="flex items-center justify-between gap-3">
               <div className="flex flex-col">
                 <span className="text-sm">
-                  {row.label} {rangeTxt ? `(${rangeTxt})` : ""}
+                  {labelFor(row.key)} {rangeTxt ? `(${rangeTxt})` : ""}
                 </span>
-                <span className="text-xs text-muted-foreground">{row.price > 0 ? `${currency.format(row.price)} c/u` : "Gratis"}</span>
+                <span className="text-xs text-muted-foreground">{row.price > 0 ? t("GuestsOverlay.PerEach", { price: currency.format(row.price) }) : t("GuestsOverlay.Free")}</span>
               </div>
-              <Controller name={name} control={control} rules={{ min: { value: 0, message: "No puede ser negativo" }, max: { value: 99, message: "Máx. 99" } }} render={({ field }) => <Counter value={field.value ?? 0} onChange={field.onChange} disabled={disabled} />} />
+              <Controller
+                name={name}
+                control={control}
+                rules={{
+                  min: { value: 0, message: t("Validation.MinZero") },
+                  max: { value: 99, message: t("Validation.Max99") },
+                }}
+                render={({ field }) => <Counter value={field.value ?? 0} onChange={field.onChange} disabled={disabled} minError={t("Validation.MinZero")} maxError={t("Validation.Max99")} />}
+              />
             </div>
           );
         })}
@@ -259,22 +296,23 @@ export function BookingForm({ id, prices, schedules, activityName }: BookingForm
 
       {adultCompanions === 0 && (
         <p className="text-destructive text-xs mt-3">
-          Necesitas al menos 1 <strong>Adulto</strong> o <strong>Anciano</strong> para añadir menores o bebés.
+          {t("GuestsOverlay.NeedsAdult", {
+            adult: t("GuestsLabels.Adults"),
+            senior: t("GuestsLabels.Seniors"),
+          })}
         </p>
       )}
 
       <Separator className="my-3" />
 
       <div className="flex items-center justify-between text-sm">
-        <span className="text-muted-foreground">
-          Total: <strong>{totalPeople}</strong> {totalPeople === 1 ? "persona" : "personas"}
-        </span>
+        <span className="text-muted-foreground">{t("GuestsOverlay.Total", { count: totalPeople })}</span>
         <span className="font-semibold">{currency.format(totalPrice)}</span>
       </div>
 
       <div className="mt-3 flex justify-end">
         <Button type="button" variant="secondary" onClick={() => setOpenGuests(false)}>
-          Hecho
+          {t("GuestsOverlay.Done")}
         </Button>
       </div>
     </div>
@@ -284,20 +322,22 @@ export function BookingForm({ id, prices, schedules, activityName }: BookingForm
     <aside className="lg:col-span-1">
       <div className="lg:sticky lg:top-6 rounded-2xl bg-slate-100 dark:bg-zinc-900 p-5 border relative">
         <div className="mb-3 flex items-center justify-between">
-          <Badge variant="destructive">Podría agotarse</Badge>
+          <Badge variant="destructive">{t("Badge.MaySellOut")}</Badge>
           <TooltipProvider>
             <Tooltip>
               <TooltipTrigger asChild>
                 <Info className="h-4 w-4 text-muted-foreground" />
               </TooltipTrigger>
-              <TooltipContent>La disponibilidad puede variar por fecha y tamaño del grupo.</TooltipContent>
+              <TooltipContent>{t("Badge.AvailabilityNote")}</TooltipContent>
             </Tooltip>
           </TooltipProvider>
         </div>
 
         {/* Encabezado de precio */}
-        <p className="text-2xl font-extrabold leading-tight">Desde {currency.format(fromPrice)}</p>
-        <p className="text-muted-foreground -mt-1 text-sm">por persona (según categoría)</p>
+        <p className="text-2xl font-extrabold leading-tight">
+          {t("PriceHeader.FromLabel")} {currency.format(fromPrice)}
+        </p>
+        <p className="text-muted-foreground -mt-1 text-sm">{t("PriceHeader.PerPersonNote")}</p>
 
         {/* Resumen dinámico */}
         <div className="mt-2 text-sm">
@@ -309,7 +349,7 @@ export function BookingForm({ id, prices, schedules, activityName }: BookingForm
               <span className="font-semibold">{currency.format(totalPrice)}</span>
             </div>
           ) : (
-            <span className="text-muted-foreground">Selecciona la cantidad de personas</span>
+            <span className="text-muted-foreground">{t("Summary.SelectQty")}</span>
           )}
         </div>
 
@@ -318,16 +358,16 @@ export function BookingForm({ id, prices, schedules, activityName }: BookingForm
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-3">
           {/* Nombre */}
           <div className="grid gap-1.5">
-            <Label htmlFor="name">Nombre</Label>
+            <Label htmlFor="name">{t("Fields.Name.Label")}</Label>
             <div className="relative">
               <User className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
               <Input
                 id="name"
-                placeholder="Jhon Doe"
+                placeholder={t("Fields.Name.Placeholder")}
                 className="pl-9"
                 {...register("name", {
-                  required: "Tu nombre es requerido",
-                  minLength: { value: 2, message: "Mínimo 2 caracteres" },
+                  required: t("Fields.Name.Required"),
+                  minLength: { value: 2, message: t("Fields.Name.Min") },
                 })}
               />
             </div>
@@ -337,16 +377,19 @@ export function BookingForm({ id, prices, schedules, activityName }: BookingForm
           {/* Correo y Teléfono */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div className="grid gap-1.5">
-              <Label htmlFor="email">Correo</Label>
+              <Label htmlFor="email">{t("Fields.Email.Label")}</Label>
               <div className="relative">
                 <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                 <Input
                   id="email"
-                  placeholder="example@mail.com"
+                  placeholder={t("Fields.Email.Placeholder")}
                   className="pl-9"
                   {...register("email", {
-                    required: "El correo es requerido",
-                    pattern: { value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/, message: "Correo inválido" },
+                    required: t("Fields.Email.Required"),
+                    pattern: {
+                      value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                      message: t("Fields.Email.Invalid"),
+                    },
                   })}
                 />
               </div>
@@ -354,16 +397,16 @@ export function BookingForm({ id, prices, schedules, activityName }: BookingForm
             </div>
 
             <div className="grid gap-1.5">
-              <Label htmlFor="phone">Teléfono</Label>
+              <Label htmlFor="phone">{t("Fields.Phone.Label")}</Label>
               <div className="relative">
                 <Phone className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                 <Input
                   id="phone"
-                  placeholder="+1 (809) 555-1234"
+                  placeholder={t("Fields.Phone.Placeholder")}
                   className="pl-9"
                   {...register("phone", {
-                    required: "El teléfono es requerido",
-                    minLength: { value: 7, message: "Teléfono muy corto" },
+                    required: t("Fields.Phone.Required"),
+                    minLength: { value: 7, message: t("Fields.Phone.Min") },
                   })}
                 />
               </div>
@@ -373,30 +416,30 @@ export function BookingForm({ id, prices, schedules, activityName }: BookingForm
 
           {/* Lugar de recogida */}
           <div className="grid gap-1.5">
-            <Label htmlFor="pickup">Lugar de recogida</Label>
+            <Label htmlFor="pickup">{t("Fields.Pickup.Label")}</Label>
             <div className="relative">
               <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-              <Input id="pickup" placeholder="Hotel Barceló, lobby principal" className="pl-9" {...register("pickup", { required: "Indica tu lugar de recogida" })} />
+              <Input id="pickup" placeholder={t("Fields.Pickup.Placeholder")} className="pl-9" {...register("pickup", { required: t("Fields.Pickup.Required") })} />
             </div>
             {errors.pickup && <p className="text-destructive text-xs">{errors.pickup.message}</p>}
           </div>
 
           {/* Fecha (Popover + Calendar) */}
           <div className="grid gap-1.5">
-            <Label>Fecha</Label>
+            <Label>{t("Fields.Date.Label")}</Label>
             <Controller
               name="date"
               control={control}
               rules={{
-                required: "Selecciona la fecha",
-                validate: (v) => !!v || "Selecciona la fecha",
+                required: t("Fields.Date.Required"),
+                validate: (v) => !!v || t("Fields.Date.Required"),
               }}
               render={({ field }) => (
                 <Popover open={openCalendar} onOpenChange={setOpenCalendar}>
                   <PopoverTrigger asChild>
                     <Button variant="outline" className="w-full justify-start cursor-pointer">
                       <CalendarIcon className="mr-2 h-4 w-4" />
-                      {field.value ? format(field.value, "dd/MM/yyyy", { locale: es }) : "Selecciona fecha"}
+                      {field.value ? format(field.value, "dd/MM/yyyy", { locale: dfLocale }) : t("Fields.Date.Placeholder")}
                     </Button>
                   </PopoverTrigger>
                   <PopoverContent className="p-0" align="start">
@@ -407,7 +450,7 @@ export function BookingForm({ id, prices, schedules, activityName }: BookingForm
                         field.onChange(d ?? null);
                         setOpenCalendar(false);
                       }}
-                      locale={es}
+                      locale={dfLocale}
                       disabled={(date) => {
                         const today = new Date();
                         today.setHours(0, 0, 0, 0);
@@ -424,15 +467,15 @@ export function BookingForm({ id, prices, schedules, activityName }: BookingForm
 
           {/* Horario (Select) */}
           <div className="grid gap-1.5">
-            <Label>Horario</Label>
+            <Label>{t("Fields.Schedule.Label")}</Label>
             <Controller
               name="schedule"
               control={control}
-              rules={{ required: "Selecciona un horario" }}
+              rules={{ required: t("Fields.Schedule.Required") }}
               render={({ field }) => (
                 <Select value={field.value} onValueChange={field.onChange} disabled={!schedules || schedules.length === 0}>
                   <SelectTrigger className="w-full">
-                    <SelectValue placeholder={schedules && schedules.length > 0 ? "Selecciona un horario" : "No hay horarios disponibles"} />
+                    <SelectValue placeholder={schedules && schedules.length > 0 ? t("Fields.Schedule.Placeholder") : t("Fields.Schedule.Empty")} />
                   </SelectTrigger>
                   <SelectContent>
                     {schedules?.map((h) => (
@@ -449,7 +492,7 @@ export function BookingForm({ id, prices, schedules, activityName }: BookingForm
 
           {/* Selector de personas (Popover) */}
           <div className="grid gap-1.5">
-            <Label>Personas</Label>
+            <Label>{t("Fields.People.Label")}</Label>
             <Popover open={openGuests} onOpenChange={setOpenGuests}>
               <PopoverTrigger asChild>
                 <Button variant="outline" className="w-full justify-between">
@@ -461,24 +504,24 @@ export function BookingForm({ id, prices, schedules, activityName }: BookingForm
               </PopoverTrigger>
               <PopoverContent className="w-[360px]">{GuestsOverlay}</PopoverContent>
             </Popover>
-            {payingCount === 0 && <p className="text-destructive text-xs">Debes seleccionar al menos 1 persona (pagante).</p>}
+            {payingCount === 0 && <p className="text-destructive text-xs">{t("Fields.People.PayingRequired")}</p>}
           </div>
 
           {/* Idioma (Select) */}
           <div className="grid gap-1.5">
-            <Label>Idioma</Label>
+            <Label>{t("Fields.Language.Label")}</Label>
             <Controller
               name="language"
               control={control}
-              rules={{ required: "Selecciona idioma" }}
+              rules={{ required: t("Fields.Language.Required") }}
               render={({ field }) => (
                 <Select value={field.value} onValueChange={field.onChange}>
                   <SelectTrigger className="w-full">
-                    <SelectValue placeholder="Selecciona idioma" />
+                    <SelectValue placeholder={t("Fields.Language.Placeholder")} />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="ES">Español</SelectItem>
-                    <SelectItem value="EN">English</SelectItem>
+                    <SelectItem value="ES">{t("Fields.Language.Options.ES")}</SelectItem>
+                    <SelectItem value="EN">{t("Fields.Language.Options.EN")}</SelectItem>
                   </SelectContent>
                 </Select>
               )}
@@ -486,17 +529,20 @@ export function BookingForm({ id, prices, schedules, activityName }: BookingForm
             {errors.language && <p className="text-destructive text-xs">{errors.language.message as string}</p>}
           </div>
 
-          {/* Notas opcionales */}
+          {/* Notas opcionales (si las activas, añade i18n también) */}
           {/* <div className="grid gap-1.5">
-            <Label htmlFor="notes">Notas (opcional)</Label>
-            <Textarea id="notes" placeholder="Alergias, horario preferido, etc." {...register("notes")} />
+            <Label htmlFor="notes">{t("Fields.Notes.Label")}</Label>
+            <Textarea id="notes" placeholder={t("Fields.Notes.Placeholder")} {...register("notes")} />
           </div> */}
 
           <Button type="submit" className="w-full cursor-pointer" disabled={!isValid || payingCount === 0}>
-            {payingCount > 0 ? `Pagar ahora · ${currency.format(totalPrice)}` : "Pagar ahora"}
+            {payingCount > 0 ? t("Buttons.PayNowWithTotal", { total: currency.format(totalPrice) }) : t("Buttons.PayNow")}
           </Button>
 
-          <p className="text-xs text-muted-foreground text-center">No se realizará ningún cargo ahora. Confirmaremos disponibilidad antes de cobrar.</p>
+          <p className="text-xs text-muted-foreground text-center">
+            {/* Mensaje opcional podría ir a i18n si deseas */}
+            {locale?.startsWith("en") ? "No charges will be made now. We will confirm availability before charging." : "No se realizará ningún cargo ahora. Confirmaremos disponibilidad antes de cobrar."}
+          </p>
         </form>
       </div>
     </aside>
