@@ -1,15 +1,16 @@
 "use client";
 
 import Image from "next/image";
-import Link from "next/link";
-import { Menu, MessageCircle } from "lucide-react";
+import { Link } from "@/i18n/navigation";
+import { useTranslations } from "next-intl";
+import { Menu } from "lucide-react";
 import { agencyInfo } from "@/config";
 
 // shadcn/ui
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger, SheetFooter, SheetClose } from "@/components/ui/sheet";
 import { waHref } from "@/utils/functions";
+import LocaleSwitcher from "./locale-switcher";
 
 /* ---------------- NAV ---------------- */
 
@@ -19,13 +20,15 @@ interface IMenuItem {
   link: string;
 }
 
-const menuItems: IMenuItem[] = [
-  { key: 1, name: "Actividades", link: "/activities" },
-  { key: 2, name: "Acerca de nosotros", link: "/about" },
-  { key: 3, name: "Tu Reserva", link: "/booking" },
-];
-
 export const NavBar = () => {
+  const t = useTranslations("NavBar");
+
+  const menuItems: IMenuItem[] = [
+    { key: 1, name: t("Activities"), link: "/activities" },
+    { key: 2, name: t("About"), link: "/about" },
+    { key: 3, name: t("YourReservation"), link: "/booking" },
+  ];
+
   return (
     <nav className="w-full">
       <div className="container mx-auto px-4 py-4 flex items-center justify-between gap-4">
@@ -45,9 +48,7 @@ export const NavBar = () => {
 
         {/* acciones derechas (desktop) */}
         <div className="hidden xl:flex items-center gap-4">
-          <Badge variant="secondary" className="text-sm px-3 py-1 rounded-full cursor-pointer">
-            ES 🇪🇸
-          </Badge>
+          <LocaleSwitcher />
 
           <Button asChild variant="outline" className="rounded-full">
             <Link href={`https://wa.me/${agencyInfo.contact.phone}`} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2">
@@ -87,9 +88,7 @@ export const NavBar = () => {
                 </nav>
 
                 <div className="pt-4">
-                  <Badge variant="secondary" className="px-3 py-1 rounded-full">
-                    ES 🇪🇸
-                  </Badge>
+                  <LocaleSwitcher />
                 </div>
               </div>
 

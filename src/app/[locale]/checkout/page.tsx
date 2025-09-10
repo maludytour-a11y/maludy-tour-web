@@ -13,9 +13,9 @@ import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Calendar, Clock, MapPin, Users, CreditCard, Banknote, ShieldCheck, Lock, ArrowLeft, Phone, Mail, User } from "lucide-react";
-import { CreateBookingSchema } from "../../schemas";
+import { CreateBookingSchema } from "../../../schemas";
 import { PaymentMethod, PaymentStatus } from "@/generated/prisma";
-import { setBookingNo } from "../../context/redux/features/bookingSlice";
+import { setBookingNo } from "../../../context/redux/features/bookingSlice";
 
 // 👇 importa el schema cliente
 

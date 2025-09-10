@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { agencyInfo } from "@/config";
 import { Mail, Phone, MapPin, Lock, ExternalLink } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 function whatsappHref(phone: string) {
   const digits = (phone || "").replace(/\D/g, "");
@@ -9,6 +10,7 @@ function whatsappHref(phone: string) {
 }
 
 export default function Footer() {
+  const f = useTranslations("Footer");
   return (
     <footer className="mt-14">
       {/* CTA superior */}
@@ -16,8 +18,8 @@ export default function Footer() {
         <div className="relative overflow-hidden rounded-3xl border bg-gradient-to-r from-emerald-500 to-emerald-600 text-white">
           <div className="p-6 md:p-8 flex flex-col md:flex-row items-start md:items-center gap-4 md:gap-6">
             <div className="flex-1">
-              <p className="text-sm/6 opacity-90">¿Necesitas ayuda con tu reserva?</p>
-              <h3 className="text-xl md:text-2xl font-extrabold tracking-tight">Nuestro equipo está listo para ayudarte</h3>
+              <p className="text-sm/6 opacity-90">{f("Banner.Question")}</p>
+              <h3 className="text-xl md:text-2xl font-extrabold tracking-tight">{f("Banner.Offer")}</h3>
             </div>
             <div className="flex flex-wrap gap-3">
               <Link href={whatsappHref(agencyInfo.contact.phone)} className="inline-flex items-center gap-2 rounded-full bg-white text-emerald-700 px-4 py-2 font-medium shadow hover:bg-emerald-50 transition">
@@ -43,7 +45,7 @@ export default function Footer() {
                 <Image src={agencyInfo.logo} alt={agencyInfo.name} width={44} height={44} className="rounded-lg" unoptimized />
                 <div>
                   <p className="text-lg font-extrabold tracking-tight">{agencyInfo.name}</p>
-                  <p className="text-xs text-neutral-500">{agencyInfo.metadata.home.description}</p>
+                  <p className="text-xs text-neutral-500">{f("Column1.SubTitle")}</p>
                 </div>
               </div>
 
@@ -75,32 +77,32 @@ export default function Footer() {
               {/* Confianza */}
               <div className="mt-5 inline-flex items-center gap-2 rounded-full border px-3 py-1 text-xs text-neutral-600 dark:text-neutral-300">
                 <Lock className="h-3.5 w-3.5" />
-                Pago seguro · PayPal y tarjeta
+                {`${f("Column1.SecurePayment")} · ${f("Column1.PaymentMethods")}`}
               </div>
             </div>
 
             {/* Enlaces rápidos */}
             <div className="lg:col-span-3">
-              <p className="text-sm font-semibold text-neutral-900 dark:text-neutral-100">Explorar</p>
+              <p className="text-sm font-semibold text-neutral-900 dark:text-neutral-100">{f("Column2.Title")}</p>
               <ul className="mt-3 space-y-2 text-sm text-neutral-600 dark:text-neutral-400">
                 <li>
                   <Link className="hover:text-emerald-600" href="/activities">
-                    Actividades
+                    {f("Column2.Activities")}
                   </Link>
                 </li>
                 <li>
                   <Link className="hover:text-emerald-600" href="/about">
-                    Acerca de
+                    {f("Column2.About")}
                   </Link>
                 </li>
                 <li>
                   <Link className="hover:text-emerald-600" href="/booking">
-                    Tu reserva
+                    {f("Column2.YourReservation")}
                   </Link>
                 </li>
                 <li>
                   <Link className="hover:text-emerald-600" href="/contact">
-                    Contacto
+                    {f("Column2.Contact")}
                   </Link>
                 </li>
               </ul>
@@ -108,26 +110,26 @@ export default function Footer() {
 
             {/* Ayuda */}
             <div className="lg:col-span-3">
-              <p className="text-sm font-semibold text-neutral-900 dark:text-neutral-100">Soporte</p>
+              <p className="text-sm font-semibold text-neutral-900 dark:text-neutral-100">{f("Column3.Title")}</p>
               <ul className="mt-3 space-y-2 text-sm text-neutral-600 dark:text-neutral-400">
                 <li>
                   <Link className="hover:text-emerald-600" href="/faq">
-                    Preguntas frecuentes
+                    {f("Column3.FrequentlyAskedQuestions")}
                   </Link>
                 </li>
                 <li>
                   <Link className="hover:text-emerald-600" href="/policies/cancellations">
-                    Política de cancelación
+                    {f("Column3.CancellationPolicy")}
                   </Link>
                 </li>
                 <li>
                   <Link className="hover:text-emerald-600" href="/terms">
-                    Términos y condiciones
+                    {f("Column3.TermsAndConditions")}
                   </Link>
                 </li>
                 <li>
                   <Link className="hover:text-emerald-600" href="/privacy">
-                    Privacidad
+                    {f("Column3.Privacy")}
                   </Link>
                 </li>
               </ul>
@@ -135,34 +137,34 @@ export default function Footer() {
 
             {/* Newsletter (opcional, sin lógica) */}
             <div className="lg:col-span-2">
-              <p className="text-sm font-semibold text-neutral-900 dark:text-neutral-100">Boletín</p>
+              <p className="text-sm font-semibold text-neutral-900 dark:text-neutral-100">{f("Column4.Title")}</p>
               <p className="mt-2 text-sm text-neutral-600 dark:text-neutral-400">
-                Ofertas y novedades de <span className="font-medium">{agencyInfo.name}</span>.
+                {f("Column4.OffersAndNews")} <span className="font-medium">{agencyInfo.name}</span>.
               </p>
               <form className="mt-3 flex items-center gap-2" action="/api/subscribe" method="POST">
                 <input name="email" type="email" placeholder="tu@email.com" required className="w-full rounded-xl border bg-white px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-emerald-500 dark:bg-zinc-900" />
                 <button type="submit" className=" cursor-pointer shrink-0 rounded-xl bg-emerald-600 px-3 py-2 text-sm font-medium text-white hover:bg-emerald-700 transition">
-                  Suscribirme
+                  {f("Column4.Subscribe")}
                 </button>
               </form>
-              <p className="mt-2 text-xs text-neutral-500">Nos tomamos en serio tu privacidad.</p>
+              <p className="mt-2 text-xs text-neutral-500">{f("Column4.SeriousPrivacy")} </p>
             </div>
           </div>
 
           {/* Bottom bar */}
           <div className="mt-10 border-t pt-6 flex flex-col md:flex-row items-center justify-between gap-3 text-sm text-neutral-500">
             <p>
-              © {new Date().getFullYear()} {agencyInfo.name}. Todos los derechos reservados.
+              © {new Date().getFullYear()} {agencyInfo.name}. {f("FinalColumn.AllRightsReserved")}
             </p>
             <div className="flex items-center gap-4">
               <Link className="hover:text-emerald-600" href="/privacy">
-                Privacidad
+                {f("FinalColumn.Privacy")}
               </Link>
               <Link className="hover:text-emerald-600" href="/cookies">
-                Cookies
+                {f("FinalColumn.Cookies")}
               </Link>
               <Link className="hover:text-emerald-600" href="/terms">
-                Términos
+                {f("FinalColumn.Terms")}
               </Link>
             </div>
           </div>

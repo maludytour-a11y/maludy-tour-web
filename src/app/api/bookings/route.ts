@@ -109,7 +109,7 @@ export async function POST(req: Request) {
       },
     };
 
-    const pdfRes = await fetch(`http://localhost:3000/api/pdf`, {
+    const pdfRes = await fetch(`${process.env.ORIGIN_URL}/api/pdf`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(pdfPayload),

@@ -1,9 +1,10 @@
 "use client";
 
 import Image from "next/image";
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
 import { Clock, MapPin, Flame } from "lucide-react";
 import Rate from "@/components/ui/rate";
+import { useTranslations } from "next-intl";
 
 export type Activity = {
   id: string;
@@ -20,6 +21,8 @@ export type Activity = {
 const currency = new Intl.NumberFormat("es-DO", { style: "currency", currency: "USD" });
 
 export function ActivityCard({ activity }: { activity: Activity }) {
+  const g = useTranslations("General");
+  const b = useTranslations("Btn");
   const ratingNum = Number(activity.rating ?? 0);
   const reviewsNum = Number(activity.reviews ?? 0);
 
@@ -58,22 +61,22 @@ export function ActivityCard({ activity }: { activity: Activity }) {
               {/* ✅ tu componente Rate */}
               <Rate value={ratingNum} />
               <span className="text-xs text-neutral-500">
-                {ratingNum.toFixed(1)} · {reviewsNum.toLocaleString()} reseñas
+                {ratingNum.toFixed(1)} · {reviewsNum.toLocaleString()} {g("Reviews")}
               </span>
             </div>
           </div>
 
           {/* Precio */}
           <div className="text-right shrink-0">
-            <p className="text-xs text-neutral-500">Desde</p>
+            <p className="text-xs text-neutral-500">{g("From")}</p>
             <p className="text-xl font-bold">{currency.format(Number(activity.price ?? 0))}</p>
-            <p className="text-xs text-neutral-500">/persona</p>
+            <p className="text-xs text-neutral-500">{`/${g("People")}`}</p>
           </div>
         </div>
 
         <div className="mt-4">
           <Link href={`/activities/${activity.id}`} className="inline-flex items-center justify-center rounded-full bg-amber-500 px-4 py-2 text-white font-medium hover:bg-amber-600 transition">
-            Reservar
+            {b("Book")}
           </Link>
         </div>
       </div>

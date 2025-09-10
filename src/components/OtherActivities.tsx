@@ -1,9 +1,11 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
 import { Button } from "@/components/ui/button";
 import { ActivityCard } from "../components";
+import { BadgeType } from "@/generated/prisma";
+import { useTranslations } from "next-intl";
 
 type Activity = {
   id: string;
@@ -14,11 +16,13 @@ type Activity = {
   duration: string;
   rating: number;
   reviews: number;
-  badge: "NEW" | "POPULAR" | "SEASON";
+  badge: BadgeType;
 };
 
 export const OtherActivities = () => {
   const [activities, setActivities] = useState<Activity[]>([]);
+  const al = useTranslations("ActivitiesList");
+  const b = useTranslations("Btn");
 
   useEffect(() => {
     const controller = new AbortController();
@@ -43,12 +47,12 @@ export const OtherActivities = () => {
       <div className="container mx-auto px-4">
         <div className="flex items-end justify-between gap-4 mb-8">
           <div>
-            <h2 className="text-2xl md:text-3xl font-extrabold text-neutral-900">Otras actividades</h2>
-            <p className="text-neutral-600">Descubre más experiencias para completar tu viaje.</p>
+            <h2 className="text-2xl md:text-3xl font-extrabold text-neutral-900">{al("OtherActivities")}</h2>
+            <p className="text-neutral-600">{al("OtherActivitiesSub")}</p>
           </div>
 
           <Button asChild className="rounded-full">
-            <Link href="/activities">Ver todas</Link>
+            <Link href="/activities">{b("ViewAll")}</Link>
           </Button>
         </div>
 

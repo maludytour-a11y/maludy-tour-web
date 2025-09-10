@@ -1,0 +1,77 @@
+{
+  "General": {
+    "From": "From",
+    "People": "People",
+    "Hours": "Hours",
+    "Reviews": "Reviews"
+  },
+  "Btn": {
+    "BookingNow": "Book Now",
+    "OtherActivities": "Other Activities",
+    "ConsultByWhatsApp": "Contact via WhatsApp",
+    "ViewAll": "View All",
+    "Book": "Book"
+  },
+  "NavBar": {
+    "Activities": "Activities",
+    "About": "About Us",
+    "YourReservation": "Your Reservation"
+  },
+  "Badges": {
+    "TopSelling": "Best Seller"
+  },
+  "Hero": {
+    "FrontPage": {
+      "TextTitle1": "GUIDED TOUR",
+      "TextTitle2": "LET’S GO TO THE COUNTRYSIDE",
+      "TextTitle3": "FROM PUNTA CANA",
+      "ShortDescription": "Enjoy a day of Dominican adventure and culture: waterfall, basilica, cocoa farm, and traditional lunch. Small group with a local guide.",
+      "Reseñas": "Reviews",
+      "FreeCancellation": "Free Cancellation",
+      "TransportationIncluded": "Transportation Included",
+      "Duration": "Duration",
+      "Languages": "Languages"
+    }
+  },
+  "ActivitiesList": {
+    "OtherActivities": "Other Activities",
+    "OtherActivitiesSub": "Discover more experiences to complete your trip."
+  },
+  "Footer": {
+    "Banner": {
+      "Question": "Do you need help with your booking?",
+      "Offer": "Our team is ready to help you"
+    },
+    "Column1": {
+      "SubTitle": "Best cultural tour in Punta Cana",
+      "SecurePayment": "Secure Payment",
+      "PaymentMethods": "PayPal and Card"
+    },
+    "Column2": {
+      "Title": "Explore",
+      "Activities": "Activities",
+      "About": "About",
+      "YourReservation": "Your reservation",
+      "Contact": "Contact"
+    },
+    "Column3": {
+      "Title": "Support",
+      "FrequentlyAskedQuestions": "Frequently Asked Questions",
+      "CancellationPolicy": "Cancellation Policy",
+      "TermsAndConditions": "Terms & Conditions",
+      "Privacy": "Privacy"
+    },
+    "Column4": {
+      "Title": "Newsletter",
+      "OffersAndNews": "Offers and news from",
+      "SeriousPrivacy": "We take your privacy seriously.",
+      "Subscribe": "Subscribe"
+    },
+    "FinalColumn": {
+      "AllRightsReserved": "All rights reserved.",
+      "Privacy": "Privacy",
+      "Cookies": "Cookies",
+      "Terms": "Terms"
+    }
+  }
+}
