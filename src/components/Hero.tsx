@@ -1,13 +1,19 @@
 "use client";
 
 import Image from "next/image";
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import Rate from "@/components/ui/rate";
 import { agencyInfo } from "@/config";
+import { useTranslations } from "next-intl";
 
 export const Hero = () => {
+  const t = useTranslations("Badges");
+  const h = useTranslations("Hero");
+  const g = useTranslations("General");
+  const b = useTranslations("Btn");
+
   return (
     <section
       className="
@@ -20,45 +26,45 @@ export const Hero = () => {
           {/* texto */}
           <div className="max-w-xl">
             <Badge className="mb-4 rounded-full px-3 py-1" variant="secondary">
-              ⭐ Top Venta 2025
+              {`⭐ ${t("TopSelling")} 2025`}
             </Badge>
 
             <h1 className="text-4xl md:text-5xl font-extrabold leading-tight text-neutral-900">
-              {agencyInfo.mainActivity.titleText1} <span className="text-emerald-700">{agencyInfo.mainActivity.titleText2}</span>
-              <br /> {agencyInfo.mainActivity.titleText3}
+              {h("FrontPage.TextTitle1")} <span className="text-emerald-700">{h("FrontPage.TextTitle2")}</span>
+              <br /> {h("FrontPage.TextTitle3")}
             </h1>
 
-            <p className="mt-4 text-neutral-600 text-base md:text-lg">{agencyInfo.mainActivity.summaryText}</p>
+            <p className="mt-4 text-neutral-600 text-base md:text-lg">{h("FrontPage.ShortDescription")}</p>
 
             <div className="mt-3 flex items-center gap-2">
               <Rate value={5} />
               <span className="text-sm text-neutral-500">
-                {agencyInfo.mainActivity.rating} ({agencyInfo.mainActivity.reviews} reseñas)
+                {agencyInfo.mainActivity.rating} ({agencyInfo.mainActivity.reviews} {g("Reviews")})
               </span>
             </div>
 
             <div className="mt-6 flex flex-wrap items-center gap-3">
               <Button asChild className="rounded-full bg-amber-500 hover:bg-amber-600 px-4 py-5 h-auto text-base">
-                <Link href={`activities/${agencyInfo.mainActivity.id}`}>Booking Now</Link>
+                <Link href={`activities/${agencyInfo.mainActivity.id}`}>{b("BookingNow")}</Link>
               </Button>
 
               <Button asChild variant="outline" className="rounded-full px-4 py-5 h-auto text-base">
-                <Link href="/activities">Otras actividades</Link>
+                <Link href="/activities">{b("OtherActivities")}</Link>
               </Button>
 
               <Button asChild variant="outline" className="rounded-full px-3 py-5 h-auto text-base flex items-center gap-2">
                 <a href={`https://wa.me/${agencyInfo.contact.phone}`} target="_blank" rel="noopener noreferrer">
                   <Image className="w-7 h-auto" src={"/whatsapp.svg"} alt={`${agencyInfo.name}-WhatsApp`} width={16} height={16} />
-                  Consultar por WhatsApp
+                  {b("ConsultByWhatsApp")}
                 </a>
               </Button>
             </div>
 
             <ul className="mt-6 text-sm text-neutral-500 grid grid-cols-2 gap-y-1 max-w-sm">
-              <li>• Cancelación gratuita</li>
-              <li>• Recogida en hotel</li>
-              <li>• Duración {agencyInfo.mainActivity.duration}</li>
-              <li>• Idiomas: {agencyInfo.mainActivity.languages}</li>
+              <li>• {h("FrontPage.FreeCancellation")}</li>
+              <li>• {h("FrontPage.TransportationIncluded")}</li>
+              <li>• {`${h("FrontPage.Duration")}: ${agencyInfo.mainActivity.duration}`}</li>
+              <li>• {`${h("FrontPage.Languages")}: ${agencyInfo.mainActivity.languages}`}</li>
             </ul>
           </div>
 
@@ -88,9 +94,9 @@ export const Hero = () => {
 
             {/* badge precio */}
             <div className="absolute -bottom-4 left-4 bg-white/90 backdrop-blur rounded-2xl shadow-md px-4 py-3">
-              <p className="text-xs text-neutral-500">Desde</p>
+              <p className="text-xs text-neutral-500">{g("From")}</p>
               <p className="text-2xl font-bold text-neutral-900">
-                ${agencyInfo.mainActivity.price} <span className="text-sm font-medium text-neutral-500">/persona</span>
+                ${agencyInfo.mainActivity.price} <span className="text-sm font-medium text-neutral-500">{`/${g("People")}`}</span>
               </p>
             </div>
           </div>

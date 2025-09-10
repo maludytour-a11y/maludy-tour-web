@@ -1,0 +1,77 @@
+{
+  "General": {
+    "From": "Desde",
+    "People": "Persona",
+    "Hours": "horas",
+    "Reviews": "reseñas"
+  },
+  "Btn": {
+    "BookingNow": "Reserva Ahora",
+    "OtherActivities": "Otras Actividades",
+    "ConsultByWhatsApp": "Consultar por WhatsApp",
+    "ViewAll": "View all",
+    "Book": "Reservar"
+  },
+  "NavBar": {
+    "Activities": "Actividades",
+    "About": "Acerca de nosotros",
+    "YourReservation": "Tu Reserva"
+  },
+  "Badges": {
+    "TopSelling": "Top Venta"
+  },
+  "Hero": {
+    "FrontPage": {
+      "TextTitle1": "TOUR GUIADO",
+      "TextTitle2": "VAMOS AL CAMPO",
+      "TextTitle3": "DESDE PUNTA CANA",
+      "ShortDescription": "Disfruta de un día de aventura y cultura dominicana: salto de agua, basílica, finca de cacao y almuerzo típico. Grupo reducido y guía local.",
+      "Reseñas": "Reseñas",
+      "FreeCancellation": "Cancelacion Gratuita",
+      "TransportationIncluded": "Transporte Incluido",
+      "Duration": "Duración",
+      "Languages": "Idiomas"
+    }
+  },
+  "ActivitiesList": {
+    "OtherActivities": "Otras actividades",
+    "OtherActivitiesSub": "Descubre más experiencias para completar tu viaje."
+  },
+  "Footer": {
+    "Banner": {
+      "Question": "¿Necesitas ayuda con tu reserva?",
+      "Offer": "Nuestro equipo está listo para ayudarte"
+    },
+    "Column1": {
+      "SubTitle": "Mejor tour cultural en Punta Cana",
+      "SecurePayment": "Pago seguro",
+      "PaymentMethods": "PayPal y Tarjeta"
+    },
+    "Column2": {
+      "Title": "Explorar",
+      "Activities": "Actividades",
+      "About": "Acerca de",
+      "YourReservation": "Tu reserva",
+      "Contact": "Contacto"
+    },
+    "Column3": {
+      "Title": "Soporte",
+      "FrequentlyAskedQuestions": "Preguntas frecuentes",
+      "CancellationPolicy": "Política de cancelación",
+      "TermsAndConditions": "Términos y condiciones",
+      "Privacy": "Privacidad"
+    },
+    "Column4": {
+      "Title": "Boletín",
+      "OffersAndNews": "Ofertas y novedades de",
+      "SeriousPrivacy": "Nos tomamos en serio tu privacidad.",
+      "Subscribe": "Suscribirme"
+    },
+    "FinalColumn": {
+      "AllRightsReserved": "Todos los derechos reservados.",
+      "Privacy": "Privacidad",
+      "Cookies": "Cookies",
+      "Terms": "Términos"
+    }
+  }
+}
