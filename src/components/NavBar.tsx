@@ -62,12 +62,15 @@ export const NavBar = () => {
         <div className="xl:hidden">
           <Sheet>
             <SheetTrigger asChild>
-              <Button variant="ghost" size="icon" className="rounded-md">
-                <Menu className="h-6 w-6" />
+              <Button
+                variant="ghost"
+                size="icon"
+                className="h-14 w-14 rounded-xl p-0 [&_svg]:!size-8" // botón grande + svg a 32px
+              >
+                <Menu className=" h-10 w-10" absoluteStrokeWidth /> {/* lucide: 32px y trazo constante */}
                 <span className="sr-only">Abrir menú</span>
               </Button>
             </SheetTrigger>
-
             <SheetContent side="right" className="w-[320px] sm:w-[380px]">
               <SheetHeader>
                 <SheetTitle className="flex items-center gap-2">
